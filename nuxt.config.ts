@@ -10,6 +10,9 @@ export default defineNuxtConfig({
 
 		"@nuxthub/core",
 	],
+	hub: {
+		database: true,
+	},
 	colorMode: {
 		preference: "light",
 	},

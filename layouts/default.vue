@@ -1,6 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
+	<div class="nascondiStampa fixed flex h-full mt-20 justify-center"><Navigazione /></div>
 	<div class="w-[1000px] p-4 mx-auto">
 		<slot />
 	</div>
@@ -9,9 +10,8 @@
 <style>
 	@media print {
 		@page {
-			size: A4;
-			margin: 0 !important;
-			height: full;
+			size: auto;
+			margin: 25mm 25mm 25mm 25mm !important;
 		}
 
 		body {
@@ -32,7 +32,7 @@
 			outline: none !important;
 		}
 
-		#nascondiStampa {
+		.nascondiStampa {
 			display: none;
 		}
 	}

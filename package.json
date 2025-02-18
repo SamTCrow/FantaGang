@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
@@ -16,12 +17,15 @@
     "@nuxthub/core": "^0.8.17",
     "@nuxtjs/color-mode": "^3.5.2",
     "@nuxtjs/tailwindcss": "^6.13.1",
+    "drizzle-kit": "^0.30.4",
     "nuxt": "^3.15.4",
     "nuxt-auth-utils": "^0.5.15",
     "vue": "latest",
     "wrangler": "^3.109.1"
   },
   "dependencies": {
-    "esbuild": "^0.25.0"
+    "drizzle-orm": "^0.39.3",
+    "esbuild": "^0.25.0",
+    "zod": "^3.24.2"
   }
 }

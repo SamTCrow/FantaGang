@@ -1,14 +1,30 @@
 <script lang="ts" setup>
 	const dati = ref({
-		giornata: null,
+		giornata: "",
 	});
 	const inputSyle = {
 		base: "text-center",
 	};
+	const dividerStyle = {
+		border: {
+			base: "border-gray-800",
+		},
+	};
 	const state = reactive({});
 	const lega = ref({ name: "Fanta Bevanda" });
 	const partite = 5;
-	const righe = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+	const righe = [
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+		{ squadra: "Inserisci il nome della squadra" },
+	];
 	const colonne = [
 		{
 			key: "squadra",
@@ -50,7 +66,10 @@
 		<span class="flex justify-center items-center text-4xl">
 			{{ lega.name }}
 		</span>
-		<UDivider class="py-2" />
+		<UDivider
+			class="py-2"
+			:ui="dividerStyle"
+		/>
 		<UForm :state="state">
 			<UFormGroup>
 				<div class="flex justify-center items-center gap-4 w-full">
@@ -66,7 +85,10 @@
 						}"
 					/>
 				</div>
-				<UDivider class="py-2" />
+				<UDivider
+					class="py-2"
+					:ui="dividerStyle"
+				/>
 				<div
 					v-for="partita in partite"
 					class="flex gap-2 justify-between py-2"
@@ -82,24 +104,30 @@
 							:ui="inputSyle"
 						/>
 					</div>
-					<UDivider orientation="vertical" />
+					<UDivider
+						orientation="vertical"
+						:ui="dividerStyle"
+					/>
 					<div class="flex gap-4 w-[20%]">
 						<UInput :ui="inputSyle" /> -
 						<UInput :ui="inputSyle" />
 					</div>
 				</div>
 			</UFormGroup>
-			<UDivider class="py-2" />
+			<UDivider
+				class="py-2"
+				:ui="dividerStyle"
+			/>
 			<div class="text-xl pb-2">
 				<span class="text-xl flex justify-center items-center">Classifica</span>
 			</div>
 			<UTable
 				:ui="{
-					wrapper: 'border border-gray-200 dark:border-gray-800',
-					divide: 'divide-y divide-gray-200 dark:divide-gray-800',
-					tbody: 'divide-y  divide-gray-200 dark:divide-gray-800',
+					wrapper: 'border border-gray-800 dark:border-gray-800',
+					divide: 'divide-y divide-gray-800 dark:divide-gray-800',
+					tbody: 'divide-y  divide-gray-800 dark:divide-gray-800',
 					tr: {
-						base: 'divide-x  divide-gray-200 dark:divide-gray-800',
+						base: 'divide-x  divide-gray-800 dark:divide-gray-800',
 					},
 					th: {
 						base: 'text-center',
@@ -109,7 +137,10 @@
 				:rows="righe"
 			>
 				<template #squadra-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						class="w-[28rem]"
+					/>
 				</template>
 				<template #punti-data>
 					<UInput :ui="inputSyle" />
@@ -133,10 +164,10 @@
 					<UInput :ui="inputSyle" />
 				</template>
 			</UTable>
-			<UDivider class="py-2" />
+
 			<UFormGroup>
 				<template #default>
-					<div class="flex justify-center items-center gap-4">
+					<div class="flex justify-center items-center gap-4 pt-4">
 						<span class="text-xl">Prossimo turno n°</span>
 						<UInput
 							class="w-[3rem]"
@@ -145,7 +176,10 @@
 							maxlength="2"
 						/>
 					</div>
-					<UDivider class="py-2" />
+					<UDivider
+						class="py-2"
+						:ui="dividerStyle"
+					/>
 
 					<div
 						v-for="partita in partite"
@@ -162,7 +196,10 @@
 								:ui="inputSyle"
 							/>
 						</div>
-						<UDivider orientation="vertical" />
+						<UDivider
+							orientation="vertical"
+							:ui="dividerStyle"
+						/>
 						<div class="flex gap-4 w-[20%]">
 							<UInput :ui="inputSyle" /> -
 							<UInput :ui="inputSyle" />
