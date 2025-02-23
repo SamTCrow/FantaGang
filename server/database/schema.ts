@@ -22,7 +22,8 @@ export const leghe = sqliteTable("leghe", {
 export const squadre = sqliteTable("squadre", {
 	id: integer("id").primaryKey({ autoIncrement: true }),
 	nome: text("nome").notNull(),
-	presidente: text("presidente").notNull(),
+	presidente: text("presidente").notNull().default("Ignoto"),
+	stemma: text("stemma"),
 	createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
 	userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
 	legaId: integer("lega_id").references(() => leghe.id, { onDelete: "cascade" }),
