@@ -1,1 +1,1 @@
-ALTER TABLE `squadre` ADD `presidente` text NOT NULL;--> statement-breakpoint
+ALTER TABLE `squadre` ADD `presidente` text;--> statement-breakpoint
