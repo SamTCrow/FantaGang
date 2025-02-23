@@ -22,8 +22,7 @@
 			form.value!.clear();
 			fetch();
 			toast.add({ title: result.message });
-
-			await navigateTo("/");
+			navigateTo("/");
 		} else {
 			toast.add({ title: result.message, color: "red" });
 		}

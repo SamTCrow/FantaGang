@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 	const { loggedIn, clear } = useUserSession();
+	const { legaSelect } = await useGetLeghe();
 	const toast = useToast();
 
 	const links = computed(() => [
@@ -14,11 +15,6 @@
 				: () => navigateTo("/login"),
 		},
 		{
-			label: "Home",
-			to: "/",
-		},
-
-		{
 			label: "Leghe",
 			to: "/leghe",
 			disabled: !loggedIn.value,
@@ -26,7 +22,7 @@
 		{
 			label: "Squadre",
 			to: "/squadre",
-			disabled: !loggedIn.value,
+			disabled: !loggedIn.value || !legaSelect.value,
 		},
 	]);
 </script>

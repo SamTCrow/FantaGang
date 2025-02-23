@@ -48,7 +48,7 @@ export default defineOAuthGoogleEventHandler({
 		return sendRedirect(event, "/");
 	},
 	async onError(event: H3Event<EventHandlerRequest>, error: Error) {
-		console.error("Google OAuth erro:", error);
+		console.error("Google OAuth error:", error);
 		return sendRedirect(event, "/error/error");
 	},
 });

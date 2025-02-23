@@ -45,6 +45,17 @@
 		getUserLeghe();
 		form.value?.clear();
 	};
+
+	const cancellaLega = async (id: string) => {
+		const result = $fetch("/api/leghe/leghe", {
+			method: "DELETE",
+			body: {
+				id: id,
+				userId: user.value?.id,
+			},
+		});
+		getUserLeghe();
+	};
 </script>
 
 <template>
@@ -101,13 +112,23 @@
 				:loading="legheLoading ? true : false"
 				:rows="listaLeghe || []"
 				:columns="columns"
-				:empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'Nessuna squadra.' }"
+				:empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'Nessuna Lega.' }"
 			>
 				<template #createdAt-data="{ row }">
 					{{ new Date(row.createdAt).toLocaleDateString() }}
 				</template>
 				<template #inizio-data="{ row }">
 					{{ row.inizio > 0 ? new Date(row.inizio).toLocaleDateString() : "ND" }}
+				</template>
+				<template #utils-data="{ row }">
+					<AuthState v-slot="{ user }">
+						<UButton
+							v-if="user"
+							:disabled="row.createdBy !== user.id"
+							icon="heroicons-outline:trash"
+							@click="cancellaLega(row.id)"
+						/>
+					</AuthState>
 				</template>
 			</UTable>
 		</UCard>

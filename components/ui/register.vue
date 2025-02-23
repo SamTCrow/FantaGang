@@ -2,6 +2,7 @@
 	import type { FormSubmitEvent, Form } from "#ui/types";
 	import { userPost, type UserPost } from "~/shared/utils/userPost";
 
+	const { fetch } = useUserSession();
 	const toast = useToast();
 
 	const registerState = reactive({
@@ -25,7 +26,8 @@
 		if (result.success) {
 			form.value!.clear;
 			toast.add({ title: "Utente Registrato" });
-			await navigateTo("/");
+			fetch();
+			navigateTo("/");
 		}
 	};
 </script>

@@ -7,7 +7,12 @@ export const schemaLegaInsert = z.object({
 		.max(100, { message: "Il nome non può essere più lungo di 100 caratteri" })
 		.trim(),
 	createdBy: z.coerce.number().int().positive(),
-	giornate: z.coerce.number().int().positive().lte(38, { message: "Massimo 38 giornate in una lega" }).default(0),
+	giornate: z.coerce
+		.number()
+		.int({ message: "Solo numeri interi" })
+		.gte(0, { message: "Deve essere maggiore di 0" })
+		.lte(38, { message: "Massimo 38 giornate in una lega" })
+		.default(0),
 	inizio: z.coerce.date().optional(),
 });
 
