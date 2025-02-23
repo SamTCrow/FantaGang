@@ -18,8 +18,8 @@ export const useGetLeghe = async () => {
 
 	const getUserLeghe = async () => {
 		legheLoading.value = true;
-		const lista = await $fetch("/api/user/leghe");
-		if (lista) {
+		const { data: lista, success } = await $fetch("/api/user/leghe");
+		if (success && lista) {
 			listaLeghe.value = lista.map((lega: any) => ({
 				...lega,
 				createdAt: new Date(lega.createdAt),

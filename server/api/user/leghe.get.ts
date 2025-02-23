@@ -2,9 +2,8 @@ import { count } from "drizzle-orm";
 import { giornate } from "~/server/database/schema";
 
 export default defineEventHandler(async (event) => {
+	const session = await getUserSession(event);
 	try {
-		const session = await getUserSession(event);
-
 		if (session.user) {
 			const listaLeghe = await db()
 				.select({
@@ -24,9 +23,18 @@ export default defineEventHandler(async (event) => {
 				.where(or(eq(leghe.createdBy, session.user.id), eq(partecipantiLeghe.userId, session.user.id)))
 				.groupBy(leghe.id, users.userName);
 
-			return listaLeghe;
+			return {
+				success: true,
+				message: "Le tue lege",
+				data: listaLeghe,
+			};
 		}
 	} catch (error) {
-		console.log(error);
+		return { success: false, message: "Errore inaspettato", error: error, data: null };
 	}
+	return {
+		success: false,
+		message: "Utente non autorizzato",
+		data: null,
+	};
 });

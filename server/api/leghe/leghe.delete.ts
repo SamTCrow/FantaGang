@@ -9,16 +9,26 @@ export default defineEventHandler(async (event) => {
 	const session = await getUserSession(event);
 	if (session.user && userId === session.user.id) {
 		try {
-			const result = await db().delete(leghe).where(eq(leghe.id, id)).returning().get();
+			const result = await db()
+				.delete(leghe)
+				.where(and(eq(leghe.id, id), eq(leghe.createdBy, session.user.id)))
+				.returning()
+				.get();
 			return {
 				success: true,
 				data: result,
+				message: "Lega eliminata",
 			};
 		} catch (error) {
 			return {
 				success: false,
 				data: error,
+				message: "Impossibile eliminare la lega",
 			};
 		}
 	}
+	return {
+		success: false,
+		message: "Non autorizzato",
+	};
 });

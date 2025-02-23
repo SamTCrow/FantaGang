@@ -2,7 +2,7 @@
 	const { listaLeghe: leghe, getUserLeghe, legheLoading, legaSelect } = await useGetLeghe();
 	const { user } = useUserSession();
 	getUserLeghe();
-	console.log(leghe.value);
+
 	const options = computed(() => {
 		if (leghe.value) {
 			const list = leghe.value.map((lega) => ({
@@ -24,6 +24,7 @@
 		:loading="legheLoading"
 		placeholder="Scegli una lega"
 		v-model="legaSelect"
+		value-attribute="value"
 		:options="options"
 		option-attribute="name"
 	/>

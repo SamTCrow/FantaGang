@@ -4,6 +4,7 @@
 	import type { FormSubmitEvent, Form } from "#ui/types";
 	const { user } = useUserSession();
 	const { listaLeghe, getUserLeghe, legheLoading } = await useGetLeghe();
+	const toast = useToast();
 	const form = ref<Form<SchemaLegaInsert>>();
 	const state = reactive({ inizio: new Date(), createdBy: user.value?.id } as SchemaLegaInsert);
 
@@ -38,23 +39,33 @@
 	];
 
 	const creaLega = async (event: FormSubmitEvent<SchemaLegaInsert>) => {
-		const result = $fetch("/api/leghe/leghe", {
+		const result = await $fetch("/api/leghe/leghe", {
 			method: "post",
 			body: event.data,
 		});
-		getUserLeghe();
-		form.value?.clear();
+		if (result.success) {
+			getUserLeghe();
+			form.value?.clear();
+			toast.add({ title: result.message, color: "green" });
+		} else {
+			toast.add({ title: result.message, color: "red" });
+		}
 	};
 
 	const cancellaLega = async (id: string) => {
-		const result = $fetch("/api/leghe/leghe", {
+		const result = await $fetch("/api/leghe/leghe", {
 			method: "DELETE",
 			body: {
 				id: id,
 				userId: user.value?.id,
 			},
 		});
-		getUserLeghe();
+		if (result.success) {
+			getUserLeghe();
+			toast.add({ title: result.message, color: "green" });
+		} else {
+			toast.add({ title: result.message, color: "red" });
+		}
 	};
 </script>
 

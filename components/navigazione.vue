@@ -22,7 +22,7 @@
 		{
 			label: "Squadre",
 			to: "/squadre",
-			disabled: !loggedIn.value || !legaSelect.value,
+			disabled: !loggedIn.value,
 		},
 	]);
 </script>
