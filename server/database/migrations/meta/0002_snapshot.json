@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "78adef54-0655-44f9-9b2d-7ddabe3b9d24",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "b05abb25-f433-4cb6-b474-0e44999d0213",
+  "prevId": "83d897de-0546-483c-b862-e800a7d2de34",
   "tables": {
     "giornate": {
       "name": "giornate",
@@ -299,7 +299,22 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_user_name_unique": {
+          "name": "users_user_name_unique",
+          "columns": [
+            "user_name"
+          ],
+          "isUnique": true
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

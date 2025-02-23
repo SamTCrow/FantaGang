@@ -4,9 +4,16 @@ export { sql, eq, and, or } from "drizzle-orm";
 import * as schema from "../database/schema";
 
 export const tables = schema;
+export const users = schema.users;
+export const leghe = schema.leghe;
+export const giornate = schema.giornate;
+export const partecipantiLeghe = schema.partecipantiLeghe;
+export const squadre = schema.squadre;
 
 export function db() {
 	return drizzle(hubDatabase(), { schema });
 }
 
-export type squadre = typeof schema.squadre.$inferInsert;
+export type Squadre = typeof schema.squadre.$inferInsert;
+export type Leghe = typeof schema.leghe.$inferInsert;
+export type Utenti = typeof schema.users.$inferInsert;

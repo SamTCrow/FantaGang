@@ -1,14 +1,21 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "78adef54-0655-44f9-9b2d-7ddabe3b9d24",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "4972960c-46c7-4b1b-86b9-0d8da84231a7",
+  "prevId": "5619f31e-89bd-44d3-aaa5-15ec63ed74bb",
   "tables": {
     "giornate": {
       "name": "giornate",
       "columns": {
         "id": {
           "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "numero": {
+          "name": "numero",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -63,7 +70,7 @@
           "name": "created_by",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {
@@ -86,7 +93,85 @@
           "columnsTo": [
             "id"
           ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "partecipantiLeghe": {
+      "name": "partecipantiLeghe",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "lega_id": {
+          "name": "lega_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "squadra_id": {
+          "name": "squadra_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "partecipantiLeghe_lega_id_leghe_id_fk": {
+          "name": "partecipantiLeghe_lega_id_leghe_id_fk",
+          "tableFrom": "partecipantiLeghe",
+          "tableTo": "leghe",
+          "columnsFrom": [
+            "lega_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "partecipantiLeghe_squadra_id_squadre_id_fk": {
+          "name": "partecipantiLeghe_squadra_id_squadre_id_fk",
+          "tableFrom": "partecipantiLeghe",
+          "tableTo": "squadre",
+          "columnsFrom": [
+            "squadra_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "partecipantiLeghe_user_id_users_id_fk": {
+          "name": "partecipantiLeghe_user_id_users_id_fk",
+          "tableFrom": "partecipantiLeghe",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -154,7 +239,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         },
         "partite_squadra_ospite_squadre_id_fk": {
@@ -167,7 +252,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         },
         "partite_giornata_id_giornate_id_fk": {
@@ -216,7 +301,7 @@
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "lega_id": {
@@ -239,7 +324,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         },
         "squadre_lega_id_leghe_id_fk": {
@@ -297,9 +382,31 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "sub": {
+          "name": "sub",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_user_name_unique": {
+          "name": "users_user_name_unique",
+          "columns": [
+            "user_name"
+          ],
+          "isUnique": true
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

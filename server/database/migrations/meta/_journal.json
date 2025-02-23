@@ -5,8 +5,92 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1739895264662,
-      "tag": "0000_ambiguous_mikhail_rasputin",
+      "when": 1739971873777,
+      "tag": "0000_chemical_the_stranger",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1739975699870,
+      "tag": "0001_clumsy_ben_parker",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1739975931075,
+      "tag": "0002_fantastic_zarek",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1739986768097,
+      "tag": "0003_premium_kinsey_walden",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1739987137158,
+      "tag": "0004_brainy_mentor",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1739987371575,
+      "tag": "0005_rare_captain_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1740072606681,
+      "tag": "0006_brown_cobalt_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1740078034060,
+      "tag": "0007_square_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1740079952130,
+      "tag": "0008_hard_purple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1740081115543,
+      "tag": "0009_furry_abomination",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1740145768789,
+      "tag": "0010_aromatic_power_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1740148869421,
+      "tag": "0011_outgoing_clint_barton",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1740241899455,
+      "tag": "0012_reflective_dust",
       "breakpoints": true
     }
   ]

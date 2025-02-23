@@ -1,14 +1,21 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "78adef54-0655-44f9-9b2d-7ddabe3b9d24",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "8fdeafa4-e47b-433a-a805-6ebaf6c08346",
+  "prevId": "2ff95970-6066-49ca-9d27-82bf591bd8be",
   "tables": {
     "giornate": {
       "name": "giornate",
       "columns": {
         "id": {
           "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "numero": {
+          "name": "numero",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -63,7 +70,7 @@
           "name": "created_by",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {
@@ -86,7 +93,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -216,7 +223,7 @@
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "lega_id": {
@@ -239,7 +246,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         },
         "squadre_lega_id_leghe_id_fk": {
@@ -252,7 +259,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -299,7 +306,22 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_user_name_unique": {
+          "name": "users_user_name_unique",
+          "columns": [
+            "user_name"
+          ],
+          "isUnique": true
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

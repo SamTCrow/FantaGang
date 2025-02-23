@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 
 		"@nuxthub/core",
 	],
+
 	hub: {
 		database: true,
 	},
@@ -17,4 +18,13 @@ export default defineNuxtConfig({
 		preference: "light",
 	},
 	compatibilityDate: "2025-02-18",
+
+	runtimeConfig: {
+		oauth: {
+			google: {
+				clientId: "",
+				clientSecret: "",
+			},
+		},
+	},
 });

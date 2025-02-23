@@ -11,6 +11,7 @@
     "db:generate": "drizzle-kit generate"
   },
   "devDependencies": {
+    "@iconify-json/heroicons-outline": "^1.2.1",
     "@nuxt/devtools": "latest",
     "@nuxt/icon": "^1.10.3",
     "@nuxt/ui": "^2.21.0",
@@ -24,8 +25,14 @@
     "wrangler": "^3.109.1"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
     "drizzle-orm": "^0.39.3",
     "esbuild": "^0.25.0",
+    "fantacalcio-voti-live": "^1.2.1",
+    "nuxt-vue3-google-signin": "^0.0.11",
+    "random-string-generator": "^1.0.2",
+    "v-calendar": "^3.1.2",
+    "vue3-google-signin": "^2.0.1",
     "zod": "^3.24.2"
   }
 }

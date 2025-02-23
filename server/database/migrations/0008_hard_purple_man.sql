@@ -1,0 +1,1 @@
+ALTER TABLE `partecipantiLeghe` ADD `user_id` integer REFERENCES users(id);

@@ -62,7 +62,7 @@
 </script>
 
 <template>
-	<div>
+	<div class="max-w-[1000px] mx-auto">
 		<span class="flex justify-center items-center text-4xl">
 			{{ lega.name }}
 		</span>
@@ -80,6 +80,7 @@
 						placeholder=""
 						maxlength="2"
 						v-model="dati.giornata"
+						size="xs"
 						:ui="{
 							base: 'text-xl text-center',
 						}"
@@ -97,11 +98,13 @@
 						<UInput
 							class="w-full"
 							:ui="inputSyle"
+							size="xs"
 						/>
 						-
 						<UInput
 							class="w-full"
 							:ui="inputSyle"
+							size="xs"
 						/>
 					</div>
 					<UDivider
@@ -109,8 +112,15 @@
 						:ui="dividerStyle"
 					/>
 					<div class="flex gap-4 w-[20%]">
-						<UInput :ui="inputSyle" /> -
-						<UInput :ui="inputSyle" />
+						<UInput
+							:ui="inputSyle"
+							size="xs"
+						/>
+						-
+						<UInput
+							:ui="inputSyle"
+							size="xs"
+						/>
 					</div>
 				</div>
 			</UFormGroup>
@@ -132,6 +142,9 @@
 					th: {
 						base: 'text-center',
 					},
+					td: {
+						padding: 'px-2 py-2',
+					},
 				}"
 				:columns="colonne"
 				:rows="righe"
@@ -139,29 +152,50 @@
 				<template #squadra-data>
 					<UInput
 						:ui="inputSyle"
-						class="w-[28rem]"
+						size="xs"
 					/>
 				</template>
 				<template #punti-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 				<template #pv-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 				<template #pn-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 				<template #pp-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 				<template #gf-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 				<template #gs-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 				<template #totali-data>
-					<UInput :ui="inputSyle" />
+					<UInput
+						:ui="inputSyle"
+						size="xs"
+					/>
 				</template>
 			</UTable>
 

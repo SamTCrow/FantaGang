@@ -1,4 +1,4 @@
-import { schemaSquadreInsert } from "~/utils/validators/squadraPost";
+import { schemaSquadreInsert } from "~/shared/utils/squadraPost";
 
 export default defineEventHandler(async (event) => {
 	const { nome, proprietario, legaId } = await readValidatedBody(event, schemaSquadreInsert.parse);
