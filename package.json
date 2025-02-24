@@ -25,6 +25,7 @@
     "wrangler": "^3.109.1"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
     "date-fns": "^2.30.0",
     "drizzle-orm": "^0.39.3",
     "esbuild": "^0.25.0",

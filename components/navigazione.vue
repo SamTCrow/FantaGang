@@ -24,6 +24,11 @@
 			to: "/squadre",
 			disabled: !loggedIn.value,
 		},
+		{
+			label: "Calendario",
+			to: "/calendario",
+			disabled: !loggedIn.value,
+		},
 	]);
 </script>
 
@@ -32,16 +37,14 @@
 		<div class="flex flex-col gap-4 w-full">
 			<div
 				class="p-2 flex flex-col gap-2"
-				v-if="user"
-			>
+				v-if="user">
 				<span class="text-lg">Benvenuto {{ user.username }}</span>
 				<UiSelettoreLega />
 			</div>
 			<UVerticalNavigation
 				:links="links"
 				:ui="{ label: 'text-xl' }"
-				class="w-full"
-			/>
+				class="w-full" />
 		</div>
 	</AuthState>
 </template>

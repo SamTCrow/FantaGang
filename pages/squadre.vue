@@ -6,18 +6,26 @@
 	const { legaSelect } = await useGetLeghe();
 	const toast = useToast();
 	const q = ref("");
+	const edit = ref(false);
 	const { listaSquadre, loadingSquadre, getUserSquadre } = await useGetSquadre();
+	const perPage = 10;
+	const page = ref(1);
+
 	getUserSquadre();
+
 	const filteredRows = computed(() => {
 		if (!q.value) {
-			return listaSquadre.value;
+			return listaSquadre.value?.slice((page.value - 1) * perPage, page.value * perPage);
 		}
-		return listaSquadre.value?.filter((squadra) => {
-			return Object.values(squadra).some((value) => {
-				return String(value).toLocaleLowerCase().includes(q.value.toLowerCase());
-			});
-		});
+		return listaSquadre.value
+			?.filter((squadra) => {
+				return Object.values(squadra).some((value) => {
+					return String(value).toLocaleLowerCase().includes(q.value.toLowerCase());
+				});
+			})
+			.slice((page.value - 1) * perPage, page.value * perPage);
 	});
+
 	const columns = [
 		{
 			key: "nome",
@@ -44,40 +52,88 @@
 		},
 	];
 
-	const state = reactive({ userId: user.value?.id, legaId: legaSelect.value } as SchemaSquadreInsert);
+	const state = reactive({ userId: user.value?.id, legaId: legaSelect.value } as SchemaSquadreInsert & {
+		squadraId: number | undefined;
+	});
 
-	const eliminaSquadra = async (squadraId: Number) => {
-		const response = await $fetch("/api/squadre/squadre", {
-			method: "DELETE",
-			body: {
-				squadraId: squadraId,
-			},
-		});
-		if (response.success) {
-			toast.add({ title: "Squadra Eliminata!" });
-			getUserSquadre();
+	const clearState = () => {
+		state.nome = "";
+		state.proprietario = "";
+		state.stemma = "";
+	};
+
+	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
+		console.log(squadraId, createdBy);
+		if (user.value) {
+			const response = await $fetch("/api/squadre/squadre", {
+				method: "DELETE",
+				body: {
+					id: squadraId,
+					userId: createdBy,
+				},
+			});
+			if (response.success) {
+				toast.add({ title: "Squadra Eliminata!" });
+				getUserSquadre();
+			}
 		}
 	};
 
 	const aggiungiSquadra = async (event: FormSubmitEvent<SchemaSquadreInsert>) => {
 		if (user.value) {
-			const response = await $fetch("/api/squadre/squadre", {
-				method: "POST",
-				body: {
-					nome: event.data.nome,
-					proprietario: event.data.proprietario,
-					legaId: event.data.legaId,
-					userId: user.value.id,
-					stemma: event.data.stemma,
-				},
-			});
-			if (response.success) {
-				toast.add({ title: response.message });
-				getUserSquadre();
+			if (!edit.value) {
+				const response = await $fetch("/api/squadre/squadre", {
+					method: "POST",
+					body: {
+						nome: event.data.nome,
+						proprietario: event.data.proprietario,
+						legaId: event.data.legaId,
+						userId: user.value.id,
+						stemma: event.data.stemma,
+					},
+				});
+				if (response.success) {
+					toast.add({ title: response.message });
+					clearState();
+					getUserSquadre();
+				} else {
+					toast.add({ title: response.message, color: "red" });
+				}
 			} else {
-				toast.add({ title: response.message, color: "red" });
+				const response = await $fetch("/api/squadre/squadre", {
+					method: "PUT",
+					body: {
+						squadraId: state.squadraId,
+						userId: user.value.id,
+						legaId: event.data.legaId,
+						stemma: event.data.stemma,
+						nome: event.data.nome,
+						proprietario: event.data.proprietario,
+					},
+				});
+				if (!response) {
+					toast.add({ title: "Modifica non riuscita", color: "red" });
+				}
+				edit.value = false;
+				clearState();
+				getUserSquadre();
+				toast.add({ title: "Squadra modficata" });
 			}
 		}
+	};
+
+	const modificaSquadra = (row: Squadra) => {
+		edit.value = true;
+		state.nome = row.nome;
+		state.proprietario = row.presidente;
+		state.stemma = row.stemma || undefined;
+		state.squadraId = row.id;
+		state.legaId = row.legaId ?? 0;
+	};
+
+	const annulla = () => {
+		edit.value = false;
+		clearState();
 	};
 </script>
 
@@ -91,22 +147,19 @@
 				class="space-y-4"
 				:schema="schemaSquadreInsert"
 				:state="state"
-				@submit="aggiungiSquadra"
-			>
+				@submit="aggiungiSquadra">
 				<div class="flex gap-12 justify-between">
 					<UFormGroup
 						class="grow"
 						label="Nome della Squadra"
 						name="nome"
-						required
-					>
+						required>
 						<UInput v-model="state.nome" />
 					</UFormGroup>
 					<UFormGroup
 						class="grow"
 						label="Proprietario della Squadra"
-						name="proprietario"
-					>
+						name="proprietario">
 						<UInput v-model="state.proprietario" />
 					</UFormGroup>
 				</div>
@@ -114,53 +167,59 @@
 					<UFormGroup
 						label="Lega"
 						class="grow"
-						name="lega"
-					>
+						name="lega">
 						<UiSelettoreLega v-model="state.legaId" />
 					</UFormGroup>
 					<UFormGroup
 						label="Stemma"
 						name="stemma"
-						class="grow"
-					>
+						class="grow">
 						<UInput
 							type="file"
 							v-model="state.stemma"
-							disabled
-						/>
+							disabled />
 					</UFormGroup>
 				</div>
-				<UButton type="submit">Aggiungi squadra</UButton>
+				<div class="space-x-2">
+					<UButton
+						type="submit"
+						:label="edit ? 'Modifica squadra' : 'Crea Squadra'" />
+					<UButton
+						label="Annulla"
+						@click="annulla" />
+				</div>
 			</UForm>
 		</UCard>
 		<UCard>
-			<template #header
-				><div class="flex justify-between items-center">
-					<span>Le tue squadre</span
-					><UInput
-						placeholder="Cerca..."
-						v-model="q"
-					/>
-				</div>
-			</template>
-			<UContainer>
-				<UTable
-					sortable
-					:loading="loadingSquadre"
-					:loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-					:rows="filteredRows || []"
-					:columns="columns"
-					:empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'Nessuna squadra.' }"
-				>
-					<template #utils-data="{ row }">
+			<template #header>Le tue squadre </template>
+			<div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 justify-between">
+				<UInput
+					v-model="q"
+					placeholder="Cerca squadre..." />
+				<UPagination
+					v-model="page"
+					v-if="filteredRows"
+					:page-count="perPage"
+					:total="filteredRows.length + 1" />
+			</div>
+			<UTable
+				sortable
+				:loading="loadingSquadre"
+				:loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+				:rows="filteredRows || []"
+				:columns="columns"
+				:empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'Nessuna squadra.' }">
+				<template #utils-data="{ row }">
+					<div class="space-x-2">
 						<UButton
-							icon="material-symbols:delete-outline"
-							label="Elimina"
-							@click="eliminaSquadra(row.id)"
-						/>
-					</template>
-				</UTable>
-			</UContainer>
+							icon="heroicons-outline:trash"
+							@click="eliminaSquadra(row.id, row.userId)" />
+						<UButton
+							icon="heroicons:pencil-square"
+							@click="modificaSquadra(row)" />
+					</div>
+				</template>
+			</UTable>
 		</UCard>
 	</UContainer>
 </template>

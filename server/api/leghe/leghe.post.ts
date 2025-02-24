@@ -13,18 +13,18 @@ export default defineEventHandler(async (event) => {
 			return {
 				success: true,
 				data: result,
-				message: "Lega creata"
+				message: "Lega creata",
 			};
 		} catch (error) {
-      return {
-        success: false,
-        data: error,
-				message: "Errore nella creazione della lega"
-      }
-    }
+			return {
+				success: false,
+				data: error,
+				message: "Errore nella creazione della lega",
+			};
+		}
 	}
 	return {
 		success: false,
-		message: "Non autorizzato"
-	}
+		message: "Non autorizzato",
+	};
 });

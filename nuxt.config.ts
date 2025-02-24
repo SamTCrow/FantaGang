@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 		"@nuxtjs/color-mode",
 		"@nuxt/icon",
 		"nuxt-auth-utils",
-
+		"@formkit/auto-animate/nuxt",
 		"@nuxthub/core",
 	],
 

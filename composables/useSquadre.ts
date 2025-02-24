@@ -1,4 +1,4 @@
-type Squadra = {
+export type Squadra = {
 	id: number;
 	nome: string;
 	presidente: string;

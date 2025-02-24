@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 				.from(squadre)
 				.leftJoin(leghe, eq(leghe.id, squadre.legaId))
 				.where(eq(squadre.userId, session.user.id))
-				.groupBy(squadre.nome, squadre.legaId);
+				.groupBy(squadre.id, squadre.legaId);
 			return {
 				success: true,
 				message: "Elenco squadre",

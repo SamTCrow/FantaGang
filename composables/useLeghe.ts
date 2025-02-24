@@ -1,4 +1,4 @@
-type Lega = {
+export type Lega = {
 	id: number;
 	nome: string;
 	createdBy: number | null;
