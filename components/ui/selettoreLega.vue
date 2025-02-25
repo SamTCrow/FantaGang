@@ -6,10 +6,13 @@
 	const options = computed(() => {
 		if (leghe.value) {
 			const list = leghe.value.map((lega) => ({
-				name: lega.nome,
+				nome: lega.nome,
 				value: lega.id,
 				amministratore: lega.createdBy === user.value?.id,
 				icon: lega.createdBy === user.value?.id ? "heroicons-outline:star" : "",
+				giornateTotali: lega.giornateTotali,
+				giornateGiocate: lega.giornateGiocate,
+				inizio: lega.inizio,
 			}));
 			return list;
 		}
@@ -24,8 +27,6 @@
 		:loading="legheLoading"
 		placeholder="Scegli una lega"
 		v-model="legaSelect"
-		value-attribute="value"
 		:options="options"
-		option-attribute="name"
-	/>
+		option-attribute="nome" />
 </template>

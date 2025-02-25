@@ -2,7 +2,6 @@
 	import { schemaLegaInsert, type SchemaLegaInsert } from "~/shared/utils/legaPost";
 	import { format } from "date-fns";
 	import type { FormSubmitEvent, Form } from "#ui/types";
-	import type { RefSymbol } from "@vue/reactivity";
 
 	const { user } = useUserSession();
 	const { listaLeghe, getUserLeghe, legheLoading } = await useGetLeghe();

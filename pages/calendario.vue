@@ -1,20 +1,23 @@
 <script lang="ts" setup>
 	const { legaSelect } = await useGetLeghe();
+
 	const state = reactive({});
-	const nomeLega = "Nome a caso per ora";
-	const giornate = 12;
-	const giornateInLega = 12;
+
 	const giornata = ref();
+
 	const items = computed(() => {
 		const listaGiornate = [];
-		for (let x = 1; x <= giornate; x++) {
-			const giornata = {
-				name: `Giornata n° ${x}`,
-				value: x,
-			};
-			listaGiornate.push(giornata);
+		if (legaSelect.value?.giornateTotali) {
+			for (let x = 1; x <= legaSelect.value?.giornateTotali; x++) {
+				const giornata = {
+					name: `Giornata n° ${x}`,
+					value: x,
+				};
+				listaGiornate.push(giornata);
+			}
+
+			return listaGiornate;
 		}
-		return listaGiornate;
 	});
 </script>
 
@@ -25,17 +28,22 @@
 	<UContainer v-else>
 		<UCard v-auto-animate>
 			<template #header>
-				{{ nomeLega }}
+				{{ legaSelect.nome }}
 			</template>
-			<div v-auto-animate>
+			<div
+				v-auto-animate
+				class="space-y-2">
 				<USelect
 					v-model="giornata"
-					placeholder="Giornata"
+					placeholder="Seleziona giornata"
 					:options="items"
 					option-attribute="name" />
 
 				<div v-if="giornata > 0">
-					<UForm :state="state"> </UForm>
+					<UCard v-auto-animate>
+						<template #header> Risultati {{ giornata }}° giornata</template>
+            
+					</UCard>
 				</div>
 			</div>
 		</UCard>

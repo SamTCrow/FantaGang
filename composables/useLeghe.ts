@@ -14,7 +14,7 @@ type ListaLeghe = Lega[];
 export const useGetLeghe = async () => {
 	const listaLeghe = useState<ListaLeghe | undefined>("listaLeghe", () => undefined);
 	const legheLoading = useState<boolean>("legheLoading", () => false);
-	const legaSelect = useState<number | undefined>("legaSelect", () => undefined);
+	const legaSelect = useState<Lega | undefined>("legaSelect", () => undefined);
 
 	const getUserLeghe = async () => {
 		legheLoading.value = true;

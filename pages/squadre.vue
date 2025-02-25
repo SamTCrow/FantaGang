@@ -52,7 +52,7 @@
 		},
 	];
 
-	const state = reactive({ userId: user.value?.id, legaId: legaSelect.value } as SchemaSquadreInsert & {
+	const state = reactive({ userId: user.value?.id, legaId: legaSelect.value?.id } as SchemaSquadreInsert & {
 		squadraId: number | undefined;
 	});
 
@@ -168,7 +168,9 @@
 						label="Lega"
 						class="grow"
 						name="lega">
-						<UiSelettoreLega v-model="state.legaId" />
+						<UiSelettoreLega
+							v-model="state.legaId"
+							value-attribute="value" />
 					</UFormGroup>
 					<UFormGroup
 						label="Stemma"

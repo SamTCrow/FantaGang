@@ -29,19 +29,14 @@ export const squadre = sqliteTable("squadre", {
 	legaId: integer("lega_id").references(() => leghe.id, { onDelete: "cascade" }),
 });
 
-export const giornate = sqliteTable("giornate", {
-	id: integer("id").primaryKey({ autoIncrement: true }),
-	numero: integer("numero").notNull(),
-	legaId: integer("lega_id").references(() => leghe.id, { onDelete: "cascade" }),
-});
-
 export const partite = sqliteTable("partite", {
 	id: integer("id").primaryKey({ autoIncrement: true }),
 	squadraCasa: integer("squadra_casa").references(() => squadre.id, { onDelete: "set null" }),
 	puntiSquadraCasa: integer("punti_squadra_casa").notNull().default(0),
 	squadraOspite: integer("squadra_ospite").references(() => squadre.id, { onDelete: "set null" }),
 	puntiSquadraOspite: integer("punti_squadra_ospite").notNull().default(0),
-	giornataId: integer("giornata_id").references(() => giornate.id, { onDelete: "cascade" }),
+	legaId: integer("lega_id").references(() => leghe.id, { onDelete: "cascade" }),
+	numeroGiornata: integer("numero_giornata").notNull(),
 });
 
 export const partecipantiLeghe = sqliteTable("partecipantiLeghe", {
