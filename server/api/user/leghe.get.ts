@@ -1,5 +1,4 @@
 import { count } from "drizzle-orm";
-import { giornate } from "~/server/database/schema";
 
 export default defineEventHandler(async (event) => {
 	const session = await getUserSession(event);
