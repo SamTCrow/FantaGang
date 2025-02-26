@@ -3,7 +3,7 @@
 	import type { FormSubmitEvent } from "#ui/types";
 
 	const { user } = useUserSession();
-	const { legaSelect } = await useGetLeghe();
+	const { legaSelect, listaLeghe } = await useGetLeghe();
 	const toast = useToast();
 	const q = ref("");
 	const edit = ref(false);
@@ -11,19 +11,26 @@
 	const perPage = 10;
 	const page = ref(1);
 
-	getUserSquadre();
-
 	const filteredRows = computed(() => {
-		if (!q.value) {
+		if (!q.value && !legaSelect.value) {
 			return listaSquadre.value?.slice((page.value - 1) * perPage, page.value * perPage);
 		}
-		return listaSquadre.value
-			?.filter((squadra) => {
+
+		let filtered = listaSquadre.value;
+
+		if (legaSelect.value) {
+			filtered = filtered?.filter((squadra) => squadra.legaId === legaSelect.value?.id);
+		}
+
+		if (q.value) {
+			filtered = filtered?.filter((squadra) => {
 				return Object.values(squadra).some((value) => {
 					return String(value).toLocaleLowerCase().includes(q.value.toLowerCase());
 				});
-			})
-			.slice((page.value - 1) * perPage, page.value * perPage);
+			});
+		}
+
+		return filtered?.slice((page.value - 1) * perPage, page.value * perPage);
 	});
 
 	const columns = [
@@ -60,6 +67,7 @@
 		state.nome = "";
 		state.proprietario = "";
 		state.stemma = "";
+		state.legaId = 0;
 	};
 
 	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
@@ -168,9 +176,11 @@
 						label="Lega"
 						class="grow"
 						name="lega">
-						<UiSelettoreLega
+						<USelect
 							v-model="state.legaId"
-							value-attribute="value" />
+							value-attribute="id"
+							:options="listaLeghe"
+							option-attribute="nome" />
 					</UFormGroup>
 					<UFormGroup
 						label="Stemma"
@@ -193,7 +203,14 @@
 			</UForm>
 		</UCard>
 		<UCard>
-			<template #header>Le tue squadre </template>
+			<template #header>
+				<div class="flex justify-between">
+					<span>Le tue squadre</span>
+					<UButton
+						label="Tutte"
+						@click="() => (legaSelect = undefined)" />
+				</div>
+			</template>
 			<div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 justify-between">
 				<UInput
 					v-model="q"

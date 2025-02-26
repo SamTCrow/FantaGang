@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 	const { loggedIn, clear } = useUserSession();
-	const { legaSelect } = await useGetLeghe();
+
 	const toast = useToast();
 
 	const links = computed(() => [

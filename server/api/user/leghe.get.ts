@@ -1,4 +1,4 @@
-import { count } from "drizzle-orm";
+import { max } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
 	const session = await getUserSession(event);
@@ -13,10 +13,10 @@ export default defineEventHandler(async (event) => {
 					createdByUsername: users.userName,
 					inizio: leghe.inizio,
 					giornateTotali: leghe.giornate,
-					giornateGiocate: count(giornate.id),
+					giornateGiocate: max(partite.numeroGiornata),
 				})
 				.from(leghe)
-				.leftJoin(giornate, eq(leghe.id, giornate.legaId))
+				.leftJoin(partite, eq(leghe.id, partite.legaId))
 				.leftJoin(partecipantiLeghe, eq(leghe.id, partecipantiLeghe.legaId))
 				.leftJoin(users, eq(users.id, leghe.createdBy))
 				.where(or(eq(leghe.createdBy, session.user.id), eq(partecipantiLeghe.userId, session.user.id)))

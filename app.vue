@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-	const {  getUserLeghe } = await useGetLeghe();
+	const { getUserLeghe } = await useGetLeghe();
+	const { getUserSquadre } = await useGetSquadre();
 	const { loggedIn } = useUserSession();
-	watch(loggedIn, async () => {
+
+	onMounted(async () => {
 		if (loggedIn.value) {
-			await getUserLeghe();
+			getUserLeghe();
+			getUserSquadre();
 		}
 	});
 </script>
+
 <template>
 	<div id="pageContainer">
 		<NuxtLayout>

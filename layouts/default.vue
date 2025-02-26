@@ -3,10 +3,8 @@
 </script>
 
 <template>
-	<div class="grid grid-cols-8 h-screen grid-rows-12">
-		<div
-			class="nascondiStampa w-full flex items-center shadow-md z-10 col-span-8 bg-neutral-200 bg-opacity-90 row-span-1"
-		>
+	<div class="flex flex-col h-screen">
+		<div class="nascondiStampa w-full flex items-center shadow-md z-10 col-span-8 bg-neutral-200 bg-opacity-90">
 			<ULink
 				class="text-2xl p-2"
 				to="/"
@@ -14,13 +12,13 @@
 			>
 		</div>
 
-		<div
-			class="nascondiStampa md:flex shadow-sm bg-neutral-200 bg-opacity-90 w-full md:col-span-1 hidden row-span-11"
-		>
-			<Navigazione />
-		</div>
-		<div class="stampabile w-full p-4 col-span-8 md:col-span-7 overflow-auto row-span-11">
-			<slot />
+		<div class="flex flex-1 overflow-auto">
+			<div class="nascondiStampa md:flex shadow-sm bg-neutral-200 bg-opacity-90 md:col-span-1 hidden w-64">
+				<Navigazione />
+			</div>
+			<div class="stampabile w-full p-4 col-span-8 md:col-span-7 overflow-auto row-span-11">
+				<slot />
+			</div>
 		</div>
 	</div>
 </template>
