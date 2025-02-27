@@ -29,6 +29,11 @@
 			to: "/calendario",
 			disabled: !loggedIn.value,
 		},
+		{
+			label: "Classifica",
+			to: "/classifica",
+			disabled: !loggedIn.value,
+		},
 	]);
 </script>
 

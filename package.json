@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "lint": "eslint --ext .js,.vue,.ts,.tsx --ignore-path .gitignore ."
   },
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.2.1",
@@ -17,8 +18,10 @@
     "@nuxt/ui": "^2.21.0",
     "@nuxthub/core": "^0.8.17",
     "@nuxtjs/color-mode": "^3.5.2",
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.13.1",
     "drizzle-kit": "^0.30.4",
+    "eslint": "^8.57.1",
     "nuxt": "^3.15.4",
     "nuxt-auth-utils": "^0.5.15",
     "vue": "latest",

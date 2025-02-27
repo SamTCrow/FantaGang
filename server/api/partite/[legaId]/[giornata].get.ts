@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 			.leftJoin(squadre, eq(partite.squadraCasa, squadre.id))
 			.leftJoin(squadre2, eq(partite.squadraOspite, squadre2.id))
 			.where(and(eq(partite.legaId, params.legaId), eq(partite.numeroGiornata, params.giornata)));
-
+		
 		return listaPartite;
 	} catch (error) {
 		console.log(error);
