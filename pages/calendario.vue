@@ -29,7 +29,7 @@
 		data: partite,
 		refresh: fetchPartite,
 		status: loadingPartite,
-	} = useFetch<Partita[]>(() => `/api/partite/${legaSelect.value?.id}/${giornata.value}`, {
+	} = useFetch<Partita[]>(() => `/api/partite/${legaSelect.value?.id}/${giornata.value ?? 1}`, {
 		lazy: true,
 		immediate: false,
 		default: () => [],

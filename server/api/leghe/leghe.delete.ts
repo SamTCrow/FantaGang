@@ -29,14 +29,14 @@ export default defineEventHandler(async (event) => {
 			});
 		}
 
-		return new Response(null, { status: 204 });
+		return result;
 	} catch (error) {
 		console.error("Errore nell'endpoint DELETE:", error);
 		return new Response(
 			JSON.stringify({
 				success: false,
 				message: "Impossibile eliminare la lega",
-				error: error instanceof Error ? error.message : 'Unknown error',
+				error: error instanceof Error ? error.message : "Unknown error",
 			}),
 			{
 				status: 500,

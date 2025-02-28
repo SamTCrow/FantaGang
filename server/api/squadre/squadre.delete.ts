@@ -5,26 +5,39 @@ const schema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-	const { id, userId } = await readValidatedBody(event, schema.parse);
-	const session = await getUserSession(event);
-	if (session.user && userId === session.user.id) {
-		try {
-			const result = await db()
-				.delete(squadre)
-				.where(and(eq(squadre.id, id), eq(squadre.userId, session.user.id)))
-				.returning()
-				.get();
-			return new Response(null, { status: 204 });
-		} catch (error) {
-			return {
-				success: false,
-				data: error,
-				message: "Impossibile eliminare la squadra",
-			};
+	try {
+		const { id, userId } = await readValidatedBody(event, schema.parse);
+		const session = await getUserSession(event);
+
+		if (!session.user || userId !== session.user.id) {
+			return new Response(JSON.stringify({ success: false, message: "Non autorizzato" }), {
+				status: 401,
+				headers: { "Content-Type": "application/json" },
+			});
 		}
+
+		const result = await db().delete(squadre).where(eq(squadre.id, id)).returning().get();
+
+		if (!result) {
+			return new Response(JSON.stringify({ success: false, message: "Risorsa non trovata" }), {
+				status: 404,
+				headers: { "Content-Type": "application/json" },
+			});
+		}
+
+		return result;
+	} catch (error) {
+		console.error("Errore nell'endpoint DELETE:", error);
+		return new Response(
+			JSON.stringify({
+				success: false,
+				message: "Impossibile eliminare la squadra",
+				error: error instanceof Error ? error.message : String(error),
+			}),
+			{
+				status: 500,
+				headers: { "Content-Type": "application/json" },
+			}
+		);
 	}
-	return {
-		success: false,
-		message: "Non autorizzato",
-	};
 });

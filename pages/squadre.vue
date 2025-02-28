@@ -79,6 +79,7 @@
 					userId: createdBy,
 				},
 			});
+			
 			if (response) {
 				toast.add({ title: "Squadra Eliminata!" });
 				getUserSquadre();

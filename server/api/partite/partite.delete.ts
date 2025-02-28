@@ -22,19 +22,6 @@ export default defineEventHandler(async (event) => {
 			});
 		}
 
-		const amministratore = await db()
-			.select({ createdBy: leghe.createdBy })
-			.from(partite)
-			.leftJoin(leghe, eq(leghe.id, partite.id))
-			.where(eq(partite.id, partita.partitaId))
-			.get();
-
-		if (amministratore?.createdBy !== session.user.id) {
-			return new Response(JSON.stringify({ success: false, message: "Utente non autorizzato" }), {
-				status: 401,
-				headers: { "Content-Type": "application/json" },
-			});
-		}
 
 		const cancellaRisultato = await db().delete(partite).where(eq(partite.id, partita.partitaId)).returning().get();
 
@@ -45,7 +32,7 @@ export default defineEventHandler(async (event) => {
 			});
 		}
 
-		return new Response(null, { status: 204 });
+		return cancellaRisultato;
 	} catch (error) {
 		console.error("Errore nell'endpoint DELETE:", error);
 		return new Response(
