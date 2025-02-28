@@ -72,8 +72,8 @@
 
 	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
 		if (user.value) {
-			const response = await $fetch("/api/squadre/squadre", {
-				method: "delete",
+			const response = await $fetch("/api/squadre/deleteSquadra", {
+				method: "post",
 				body: {
 					id: squadraId,
 					userId: createdBy,

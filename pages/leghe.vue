@@ -116,8 +116,8 @@
 	};
 
 	const cancellaLega = async (id: string) => {
-		const result = await $fetch("/api/leghe/leghe", {
-			method: "delete",
+		const result = await $fetch("/api/leghe/deleteLega", {
+			method: "post",
 			body: {
 				id: id,
 				userId: user.value?.id,

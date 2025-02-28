@@ -134,8 +134,8 @@
 	};
 
 	const cancellaPartita = async (partitaId: number) => {
-		const cancellaPartita = await $fetch("/api/partite/partite", {
-			method: "delete",
+		const cancellaPartita = await $fetch("/api/partite/deletePartita", {
+			method: "post",
 			body: { partitaId: partitaId },
 		});
 		if (cancellaPartita) {
