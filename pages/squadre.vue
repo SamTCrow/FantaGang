@@ -73,13 +73,13 @@
 	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
 		if (user.value) {
 			const response = await $fetch("/api/squadre/squadre", {
-				method: "DELETE",
+				method: "delete",
 				body: {
 					id: squadraId,
 					userId: createdBy,
 				},
 			});
-			if (response.success) {
+			if (response) {
 				toast.add({ title: "Squadra Eliminata!" });
 				getUserSquadre();
 			}

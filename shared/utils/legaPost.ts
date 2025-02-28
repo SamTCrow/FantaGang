@@ -11,7 +11,7 @@ export const schemaLegaInsert = z.object({
     .number()
     .int({ message: 'Solo numeri interi' })
     .gte(0, { message: 'Deve essere maggiore di 0' })
-    .lte(38, { message: 'Massimo 38 giornate in una lega' })
+    .lte(40, { message: 'Massimo 38 giornate in una lega' })
     .default(0),
   inizio: z.coerce.date({ message: 'Data non valida' }).optional()
 })

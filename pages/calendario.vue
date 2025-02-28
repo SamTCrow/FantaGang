@@ -135,7 +135,7 @@
 
 	const cancellaPartita = async (partitaId: number) => {
 		const cancellaPartita = await $fetch("/api/partite/partite", {
-			method: "DELETE",
+			method: "delete",
 			body: { partitaId: partitaId },
 		});
 		if (cancellaPartita) {
@@ -175,6 +175,7 @@
 						place-holder="Seleziona Giornata..."
 						@change="fetchPartite" />
 					<UButton
+						class="hidden"
 						icon="heroicons-outline:plus"
 						@click="aggiungiGiornata" />
 				</div>
@@ -270,6 +271,7 @@
 							v-auto-animate>
 							<div
 								v-for="partita in partite"
+								:key="partita.id"
 								class="flex gap-4 items-center">
 								<UButton
 									icon="heroicons:pencil"

@@ -35,18 +35,21 @@
 									<span>Inizio: {{ new Date(lega.inizio).toLocaleDateString() }}</span>
 								</div>
 							</template>
-							<ul>
+							<ul >
 								<li
 									v-auto-animate
 									v-for="squadra in lega.squadre"
-									class="hover:scale-125 hover:font-bold hover:opacity-85 flex flex-col"
-									@click="show.has(squadra.id) ? show.delete(squadra.id) : show.add(squadra.id)">
-									{{ squadra.nome }}
+									:key="squadra.id"
+									class="hover:scale-125 hover:font-bold hover:opacity-85 flex flex-col">
+									<span
+										@click="show.has(squadra.id) ? show.delete(squadra.id) : show.add(squadra.id)">
+										{{ squadra.nome }}
+									</span>
 									<span
 										v-if="show.has(squadra.id)"
 										class="text-sm"
-										>Presidente: {{ squadra.presidente }}</span
-									>
+										>Presidente: {{ squadra.presidente }}
+									</span>
 								</li>
 							</ul>
 						</UCard>

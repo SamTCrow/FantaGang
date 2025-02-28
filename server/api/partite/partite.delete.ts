@@ -25,8 +25,11 @@ export default defineEventHandler(async (event) => {
 	try {
 		const cancellaRisultato = await db().delete(partite).where(eq(partite.id, partita.partitaId)).returning().get();
 		if (!cancellaRisultato) {
-			throw createError({ statusCode: 500, message: "Errore nel database" });
+			throw createError({ statusCode: 404, message: "Partita non trovata" });
 		}
-		return cancellaRisultato;
-	} catch (error) {}
+		return new Response(null, { status: 204 });
+	} catch (error) {
+		console.error(error);
+		throw createError({ statusCode: 500, message: "Errore imprevisto" });
+	}
 });
