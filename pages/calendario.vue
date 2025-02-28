@@ -50,7 +50,6 @@
 		state.puntiOspite = undefined;
 		isEditing.value = false;
 		editingPartita.value = null;
-		show.value = false;
 	};
 
 	const options = computed(() => {

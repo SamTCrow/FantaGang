@@ -11,23 +11,14 @@ export default defineEventHandler(async (event) => {
 	if (!session.user) {
 		throw createError({ statusCode: 401, message: "Utente non loggato" });
 	}
-	const legaPartita = await db()
-		.select({ legaId: partite.legaId })
+	const amministratore = await db()
+		.select({ createdBy: leghe.createdBy })
 		.from(partite)
+		.leftJoin(leghe, eq(leghe.id, partite.id))
 		.where(eq(partite.id, partita.partitaId))
 		.get();
 
-	if (!legaPartita?.legaId) {
-		throw createError({ statusCode: 500, message: "La lega non esiste più" });
-	}
-
-	const amministratore = await db()
-		.select()
-		.from(leghe)
-		.where(and(eq(leghe.id, legaPartita.legaId), eq(leghe.createdBy, session.user.id)))
-		.get();
-
-	if (!amministratore) {
+	if (amministratore?.createdBy !== session.user.id) {
 		throw createError({ statusCode: 401, message: "Utente non autorizzato" });
 	}
 

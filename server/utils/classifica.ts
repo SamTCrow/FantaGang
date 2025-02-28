@@ -26,16 +26,30 @@ export type Giornata = {
 	risultati: Risultato[];
 };
 
+interface Punteggio {
+	casa: number;
+	ospite: number;
+}
+
 export type Classifica = risultatiSquadra[];
 
 export const calcoloClassifica = async (risultati: Giornata[]) => {
 	const classifica = new Map<number, Omit<risultatiSquadra, "id">>();
-
-	const calcoloGol = (punti: number) => {
-		if (punti < 66) {
-			return 0;
+	const calcoloGol = (puntiCasa: number, puntiOspite: number): Punteggio => {
+		if (puntiCasa < 66 && puntiOspite < 66) {
+			const diff = Math.abs(puntiCasa - puntiOspite);
+			if (diff >= 6) {
+				return {
+					casa: puntiCasa > puntiOspite ? 1 : 0,
+					ospite: puntiOspite > puntiCasa ? 1 : 0,
+				};
+			}
+			return { casa: 0, ospite: 0 };
 		}
-		return Math.floor((punti - 66) / 6) + 1;
+		return {
+			casa: Math.max(0, Math.floor((puntiCasa - 66) / 6) + 1),
+			ospite: Math.max(0, Math.floor((puntiOspite - 66) / 6) + 1),
+		};
 	};
 
 	risultati.forEach((risultato) => {
@@ -66,23 +80,22 @@ export const calcoloClassifica = async (risultati: Giornata[]) => {
 				tot: 0,
 			};
 
-			const golCasa = calcoloGol(partita.puntiCasa);
-			const golOspite = calcoloGol(partita.puntiOspite);
+			const gol = calcoloGol(partita.puntiCasa, partita.puntiOspite);
 
-			squadraCasa.gf += golCasa;
-			squadraCasa.gs += golOspite;
+			squadraCasa.gf += gol.casa;
+			squadraCasa.gs += gol.ospite;
 			squadraCasa.tot += partita.puntiCasa;
 			squadraCasa.pt += 1;
-			squadraOspite.gs += golOspite;
-			squadraOspite.gs += golCasa;
+			squadraOspite.gs += gol.ospite;
+			squadraOspite.gs += gol.casa;
 			squadraOspite.tot += partita.puntiOspite;
 			squadraOspite.pt += 1;
 
-			if (golCasa > golOspite) {
+			if (gol.casa > gol.ospite) {
 				squadraCasa.pv += 1;
 				squadraCasa.pti += 3;
 				squadraOspite.pp += 1;
-			} else if (golCasa < golOspite) {
+			} else if (gol.casa < gol.ospite) {
 				squadraOspite.pv += 1;
 				squadraOspite.pti += 3;
 				squadraCasa.pp += 1;
@@ -98,7 +111,12 @@ export const calcoloClassifica = async (risultati: Giornata[]) => {
 		});
 	});
 	const classificaElaborata = Array.from(classifica.values())
-		.sort((a, b) => b.pti - a.pti)
+		.sort((a, b) => {
+			if (b.pti !== a.pti) {
+				return b.pti - a.pti;
+			}
+			return b.tot - a.tot;
+		})
 		.map((squadra, index) => ({
 			...squadra,
 			posizione: index + 1,

@@ -3,9 +3,9 @@ const schema = z.object({
 	partitaId: z.number().positive().int().lte(9999999),
 	giornata: z.coerce.number().positive().int().lte(40).optional(),
 	squadraCasa: z.number().positive().int().lte(9999999).optional(),
-	puntiCasa: z.number().positive().int().lte(999).optional(),
+	puntiCasa: z.number().positive().lte(999).optional(),
 	squadraOspite: z.number().positive().int().lte(9999999).optional(),
-	puntiOspite: z.number().positive().int().lte(999).optional(),
+	puntiOspite: z.number().positive().lte(999).optional(),
 });
 
 export default defineEventHandler(async (event) => {
