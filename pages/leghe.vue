@@ -15,6 +15,12 @@
 		legaId: number | undefined;
 	});
 
+	const formattedDate = computed(() => {
+		if (!state.inizio || isNaN(new Date(state.inizio).getTime())) {
+			return "";
+		}
+		return format(new Date(state.inizio), "d MMM, yyyy");
+	});
 	const columns = [
 		{
 			key: "nome",
@@ -113,7 +119,7 @@
 		const result = await $fetch("/api/leghe/leghe", {
 			method: "delete",
 			body: {
-				id,
+				id: id,
 				userId: user.value?.id,
 			},
 		});
@@ -167,7 +173,7 @@
 						<UPopover :popper="{ placement: 'bottom-start' }">
 							<UButton
 								icon="i-heroicons-calendar-days-20-solid"
-								:label="state.inizio ? format(state.inizio, 'd MMM, yyy') : ''" />
+								:label="formattedDate" />
 
 							<template #panel="{ close }">
 								<UiDatePicker
