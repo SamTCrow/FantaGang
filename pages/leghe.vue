@@ -51,6 +51,9 @@
 		},
 	];
 	const filteredRows = computed(() => {
+		if (!listaLeghe.value) {
+			return [];
+		}
 		if (!q.value) {
 			return listaLeghe.value?.slice((page.value - 1) * perPage, page.value * perPage);
 		}
