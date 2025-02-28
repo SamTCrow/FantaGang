@@ -71,19 +71,19 @@
 	};
 
 	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
-		if (user.value) {
-			const response = await $fetch("/api/squadre/deleteSquadra", {
-				method: "post",
-				body: {
-					id: squadraId,
-					userId: createdBy,
-				},
-			});
-			
-			if (response) {
-				toast.add({ title: "Squadra Eliminata!" });
-				getUserSquadre();
-			}
+		const response = await $fetch("/api/squadre/deleteSquadra", {
+			method: "post",
+			body: {
+				id: squadraId,
+				userId: createdBy,
+			},
+		});
+
+		if (response) {
+			toast.add({ title: "Squadra Eliminata!" });
+			getUserSquadre();
+		} else {
+			toast.add({ title: "Errore nell'eliminazione della squadra", color: "red" });
 		}
 	};
 

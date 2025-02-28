@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-	import { format } from "date-fns";
 	import type { FormSubmitEvent, Form } from "#ui/types";
 	import { schemaLegaInsert, type SchemaLegaInsert } from "~/shared/utils/legaPost";
 
 	const { user } = useUserSession();
+
 	const { listaLeghe, getUserLeghe, legheLoading } = await useGetLeghe();
 	const page = ref(1);
 	const q = ref("");
@@ -19,7 +19,7 @@
 		if (!state.inizio || isNaN(new Date(state.inizio).getTime())) {
 			return "";
 		}
-		return format(new Date(state.inizio), "d MMM, yyyy");
+		return new Date(state.inizio).toLocaleDateString();
 	});
 	const columns = [
 		{
