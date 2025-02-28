@@ -12,20 +12,20 @@ export type Lega = {
 type ListaLeghe = Lega[];
 
 export const useGetLeghe = async () => {
-	const listaLeghe = useState<ListaLeghe | undefined>("listaLeghe", () => undefined);
-	const legheLoading = useState<boolean>("legheLoading", () => false);
-	const legaSelect = useState<Lega | undefined>("legaSelect", () => undefined);
+  const listaLeghe = useState<ListaLeghe | undefined>('listaLeghe', () => undefined)
+  const legheLoading = useState<boolean>('legheLoading', () => false)
+  const legaSelect = useState<Lega | undefined>('legaSelect', () => undefined)
 
-	const getUserLeghe = async () => {
-		legheLoading.value = true;
-		const { data: lista, success } = await $fetch("/api/user/leghe");
-		if (success && lista) {
-			listaLeghe.value = lista.map((lega: any) => ({
-				...lega,
-				createdAt: new Date(lega.createdAt),
-			}));
-		}
-		legheLoading.value = false;
-	};
-	return { listaLeghe, getUserLeghe, legheLoading, legaSelect };
-};
+  const getUserLeghe = async () => {
+    legheLoading.value = true
+    const { data: lista, success } = await $fetch('/api/user/leghe')
+    if (success && lista) {
+      listaLeghe.value = lista.map((lega: any) => ({
+        ...lega,
+        createdAt: new Date(lega.createdAt)
+      }))
+    }
+    legheLoading.value = false
+  }
+  return { listaLeghe, getUserLeghe, legheLoading, legaSelect }
+}

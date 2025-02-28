@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	const { listaLeghe: leghe, getUserLeghe, legheLoading, legaSelect } = await useGetLeghe();
+	const { listaLeghe: leghe, legheLoading, legaSelect } = await useGetLeghe();
 	const { user } = useUserSession();
 
 	const options = computed(() => {
@@ -16,6 +16,10 @@
 			return list;
 		}
 	});
+
+	const goToLega = async () => {
+		await navigateTo("/lega/" + legaSelect.value?.id);
+	};
 </script>
 
 <template>
@@ -27,5 +31,6 @@
 		placeholder="Scegli una lega"
 		v-model="legaSelect"
 		:options="options"
-		option-attribute="nome" />
+		option-attribute="nome"
+		@change="goToLega" />
 </template>

@@ -14,27 +14,31 @@
 </script>
 
 <template>
-	<div class="flex w-full p-6 text-xl justify-evenly outline outline-1 outline-offset-1 text-center">
+	<div class="flex p-6 text-lg justify-evenly outline outline-1 outline-offset-1 text-center">
 		<div class="gap-4 w-full flex justify-around">
-			<span class="font-bold w-full">{{ partita.puntiCasa }}</span>
+			<span class="font-bold">{{ partita.puntiCasa }}</span>
 			<span
-				class="w-full"
-				:class="gol.casa > gol.ospite ? 'scale-125 text-primary-800 dark:text-primary-200' : ''"
+				class="w-full grow line-clamp-1"
+				:class="
+					gol.casa > gol.ospite ? 'scale-105 text-primary-800 dark:text-primary-200 text-lg font-bold' : ''
+				"
 				>{{ partita.nomeCasa?.toUpperCase() }}</span
 			>
 		</div>
-		<div class="gap-4 font-bold w-full flex justify-center">
+		<div class="gap-4 font-bold flex justify-center">
 			<span class="">{{ gol.casa }}</span>
 			<span class="">-</span>
 			<span class="">{{ gol.ospite }}</span>
 		</div>
 		<div class="gap-4 w-full flex justify-around">
 			<span
-				class="w-full"
-				:class="gol.ospite > gol.casa ? 'scale-125 text-primary-800 dark:text-primary-200' : ''"
+				class="w-full grow line-clamp-1"
+				:class="
+					gol.ospite > gol.casa ? 'scale-105 text-primary-800 dark:text-primary-200 text-lg font-bold' : ''
+				"
 				>{{ partita.nomeOspite?.toUpperCase() }}</span
 			>
-			<span class="font-bold w-full">{{ partita.puntiOspite }}</span>
+			<span class="font-bold">{{ partita.puntiOspite }}</span>
 		</div>
 	</div>
 </template>

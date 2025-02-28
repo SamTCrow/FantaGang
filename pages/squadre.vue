@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-	import { schemaSquadreInsert, type SchemaSquadreInsert } from "~/shared/utils/squadraPost";
 	import type { FormSubmitEvent } from "#ui/types";
+	import { schemaSquadreInsert, type SchemaSquadreInsert } from "~/shared/utils/squadraPost";
 
 	const { user } = useUserSession();
 	const { legaSelect, listaLeghe } = await useGetLeghe();
@@ -67,11 +67,10 @@
 		state.nome = "";
 		state.proprietario = "";
 		state.stemma = "";
-		state.legaId = 0;
+		state.legaId = legaSelect.value?.id ?? 0;
 	};
 
 	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
-		console.log(squadraId, createdBy);
 		if (user.value) {
 			const response = await $fetch("/api/squadre/squadre", {
 				method: "DELETE",
@@ -146,8 +145,8 @@
 </script>
 
 <template>
-	<UContainer class="space-y-2"
-		><UCard>
+	<UContainer class="space-y-2">
+		<UCard>
 			<template #header>
 				<span>Aggiungi una squadra</span>
 			</template>
@@ -187,8 +186,8 @@
 						name="stemma"
 						class="grow">
 						<UInput
-							type="file"
 							v-model="state.stemma"
+							type="file"
 							disabled />
 					</UFormGroup>
 				</div>
@@ -216,8 +215,8 @@
 					v-model="q"
 					placeholder="Cerca squadre..." />
 				<UPagination
-					v-model="page"
 					v-if="filteredRows"
+					v-model="page"
 					:page-count="perPage"
 					:total="filteredRows.length + 1" />
 			</div>

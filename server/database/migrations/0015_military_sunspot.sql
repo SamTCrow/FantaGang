@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX `partita_unica_casa` ON `partite` (`lega_id`,`numero_giornata`,`squadra_casa`);--> statement-breakpoint
+CREATE UNIQUE INDEX `partita_unica_ospite` ON `partite` (`lega_id`,`numero_giornata`,`squadra_ospite`);
