@@ -119,17 +119,17 @@
 	};
 
 	const cancellaLega = async (id: string) => {
-		const result = await $fetch("/api/leghe/deleteLega", {
-			method: "post",
-			body: {
-				id: id,
-				userId: user.value?.id,
-			},
-		});
-		if (result) {
-			getUserLeghe();
+		try {
+			await $fetch("/api/leghe/leghe", {
+				method: "delete",
+				query: {
+					id: id,
+				},
+			});
 			toast.add({ title: "Lega eliminata", color: "green" });
-		} else {
+			getUserLeghe();
+		} catch (error) {
+			console.error(error);
 			toast.add({ title: "Errore nell'eliminazione della lega", color: "red" });
 		}
 	};

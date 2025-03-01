@@ -1,47 +1,34 @@
 import { z } from "zod";
 const schema = z.object({
 	id: z.coerce.number().int().positive(),
-	userId: z.coerce.number().int().positive(),
 });
 
 export default defineEventHandler(async (event) => {
+	const query = await getValidatedQuery(event, schema.safeParse);
+	const { user } = await getUserSession(event);
+
+	if (!query.success) {
+		throw createError({ statusCode: 400, message: "Parametri non validi" });
+	}
+
+	if (!user) {
+		throw createError({ statusCode: 401, message: "Utente non autorizzato" });
+	}
+
 	try {
-		const { id, userId } = await readValidatedBody(event, schema.parse);
-		const session = await getUserSession(event);
-
-		if (!session.user || userId !== session.user.id) {
-			return new Response(JSON.stringify({ success: false, message: "Non autorizzato" }), {
-				status: 401,
-				headers: { "Content-Type": "application/json" },
-			});
-		}
-
-		const result = await db()
+		const deleteLega = await db()
 			.delete(leghe)
-			.where(and(eq(leghe.id, id), eq(leghe.createdBy, session.user.id)))
+			.where(and(eq(leghe.id, query.data.id), eq(leghe.createdBy, user.id)))
 			.returning()
 			.get();
 
-		if (!result) {
-			return new Response(JSON.stringify({ success: false, message: "Risorsa non trovata" }), {
-				status: 404,
-				headers: { "Content-Type": "application/json" },
-			});
+		if (!deleteLega) {
+			throw createError({ statusCode: 404, message: "Lega non esistente" });
 		}
 
-		return result;
+		return deleteLega;
 	} catch (error) {
-		console.error("Errore nell'endpoint DELETE:", error);
-		return new Response(
-			JSON.stringify({
-				success: false,
-				message: "Impossibile eliminare la lega",
-				error: error instanceof Error ? error.message : "Unknown error",
-			}),
-			{
-				status: 500,
-				headers: { "Content-Type": "application/json" },
-			}
-		);
+		console.error(error);
+		throw createError({ status: 500, message: "Errore imprevisto" });
 	}
 });

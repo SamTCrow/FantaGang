@@ -70,18 +70,18 @@
 		state.legaId = legaSelect.value?.id ?? 0;
 	};
 
-	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
-		const response = await $fetch("/api/squadre/squadre", {
-			method: "delete",
-			query: {
-				id: squadraId,
-			},
-		});
-
-		if (response) {
+	const eliminaSquadra = async (squadraId: number) => {
+		try {
+			await $fetch("/api/squadre/squadre", {
+				method: "delete",
+				query: {
+					id: squadraId,
+				},
+			});
 			toast.add({ title: "Squadra Eliminata!" });
 			getUserSquadre();
-		} else {
+		} catch (error) {
+			console.error(error);
 			toast.add({ title: "Errore nell'eliminazione della squadra", color: "red" });
 		}
 	};
@@ -231,7 +231,7 @@
 					<div class="space-x-2">
 						<UButton
 							icon="heroicons-outline:trash"
-							@click="eliminaSquadra(row.id, row.userId)" />
+							@click="eliminaSquadra(row.id)" />
 						<UButton
 							icon="heroicons:pencil-square"
 							@click="modificaSquadra(row)" />

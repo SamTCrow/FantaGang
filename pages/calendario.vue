@@ -134,13 +134,19 @@
 	};
 
 	const cancellaPartita = async (partitaId: number) => {
-		const cancellaPartita = await $fetch("/api/partite/deletePartita", {
-			method: "post",
-			body: { partitaId: partitaId },
-		});
-		if (cancellaPartita) {
-			toast.add({ title: "Partita cancellata" });
+		try {
+			await $fetch("/api/partite/partite", {
+				method: "delete",
+				query: {
+					id: partitaId,
+				},
+			});
+
+			toast.add({ title: "Partita eliminata", color: "green" });
 			fetchPartite();
+		} catch (error) {
+			console.error(error);
+			toast.add({ title: "Errore nell'eliminazione della partita", color: "red" });
 		}
 	};
 

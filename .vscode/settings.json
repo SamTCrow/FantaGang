@@ -1,5 +1,5 @@
 {
 	"prettier.vueIndentScriptAndStyle": true,
-	"prettier.printWidth": 120,
+	"prettier.printWidth": 100,
 	"prettier.bracketSameLine": true
 }

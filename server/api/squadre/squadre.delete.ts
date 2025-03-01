@@ -22,6 +22,10 @@ export default defineEventHandler(async (event) => {
 			.returning()
 			.get();
 
+		if (!deletedTeam) {
+			throw createError({ statusCode: 404, message: "Squadra non esistente" });
+		}
+
 		return deletedTeam;
 	} catch (error) {
 		console.error(error);
