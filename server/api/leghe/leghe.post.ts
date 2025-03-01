@@ -3,11 +3,11 @@ import { schemaLegaInsert } from '~/shared/utils/legaPost'
 export default defineEventHandler(async (event) => {
   const lega = await readValidatedBody(event, schemaLegaInsert.parse)
   const { user } = await getUserSession(event)
-  if (user?.id === lega.createdBy) {
+  if (user?.id) {
     try {
       const result = await db()
         .insert(leghe)
-        .values({ ...lega, createdAt: new Date() })
+        .values({ ...lega, createdAt: new Date(), createdBy: user?.id })
         .returning()
         .get()
       return {

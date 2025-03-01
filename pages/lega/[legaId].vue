@@ -14,9 +14,11 @@
 		squadre: Squadra[];
 		classifica: Classifica;
 	}
-	const show = ref(new Set());
 	const legaId = useRoute().params.legaId;
-	const { data: lega, refresh } = await useFetch<Lega>(() => "/api/leghe/" + legaId, { lazy: true });
+	const show = ref(new Set());
+	const { data: lega } = await useFetch<Lega>(() => "/api/leghe/" + legaId, {
+		lazy: true,
+	});
 </script>
 
 <template>
@@ -32,17 +34,24 @@
 							<template #header>
 								<div class="flex justify-between">
 									<span>Giornate: {{ lega.giornateTotali }}</span>
-									<span>Inizio: {{ new Date(lega.inizio).toLocaleDateString() }}</span>
+									<span
+										>Inizio:
+										{{ new Date(lega.inizio).toLocaleDateString() }}</span
+									>
 								</div>
 							</template>
-							<ul >
+							<ul>
 								<li
 									v-auto-animate
 									v-for="squadra in lega.squadre"
 									:key="squadra.id"
 									class="hover:scale-125 hover:font-bold hover:opacity-85 flex flex-col">
 									<span
-										@click="show.has(squadra.id) ? show.delete(squadra.id) : show.add(squadra.id)">
+										@click="
+											show.has(squadra.id)
+												? show.delete(squadra.id)
+												: show.add(squadra.id)
+										">
 										{{ squadra.nome }}
 									</span>
 									<span
@@ -56,9 +65,7 @@
 					</div>
 				</template>
 				<div>
-					<UTable
-						:rows="lega.classifica"
-						:columns="columns" />
+					<Classifica :legaId="Number(legaId)" />
 				</div>
 			</UCard>
 		</UContainer>

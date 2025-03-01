@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { Classifica } from "~/server/utils/classifica";
 const schema = z.object({
 	legaId: z.coerce.number().positive().int().lte(99999999),
 });
@@ -22,7 +21,8 @@ export default defineEventHandler(async (event) => {
       json_object(
         'nome', ${squadre.nome},
         'id', ${squadre.id},
-				'presidente', ${squadre.presidente}
+				'presidente', ${squadre.presidente},
+				'stemma', ${squadre.stemma}
       )
     )`,
 			})
@@ -32,16 +32,18 @@ export default defineEventHandler(async (event) => {
 			.groupBy(leghe.id)
 			.get();
 
-		const classifica = await $fetch<Classifica>("/api/classifiche/" + legaId);
-
 		if (!result) {
 			throw createError({ statusCode: 500, message: "Errore nel database" });
 		}
 
 		return {
 			...result,
-			squadre: JSON.parse(result.squadre),
-			classifica: classifica,
+			squadre: JSON.parse(result.squadre) as {
+				nome: string;
+				id: number;
+				presidente: string;
+				stemma: string;
+			}[],
 		};
 	} catch (error) {
 		console.log(error);

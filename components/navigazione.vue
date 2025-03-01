@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+	//TODO aggiungere pagina per profilo
 	const { loggedIn, clear } = useUserSession();
 	const { legaSelect } = await useGetLeghe();
 
@@ -13,21 +14,21 @@
 						toast.add({ title: "Sei uscito", color: "red" });
 						await navigateTo("/");
 				  }
-				: () => navigateTo("/login"),
+				: async () => await navigateTo("/login"),
 		},
 		{
 			label: "Leghe",
-			to: "/leghe",
+			to: "/leghe/",
 			disabled: !loggedIn.value,
 		},
 		{
 			label: "Squadre",
-			to: "/squadre",
+			to: "/squadre/",
 			disabled: !loggedIn.value,
 		},
 		{
 			label: "Calendario",
-			to: "/calendario",
+			to: "/calendario/" + (legaSelect.value?.id ?? ""),
 			disabled: !loggedIn.value,
 		},
 		{

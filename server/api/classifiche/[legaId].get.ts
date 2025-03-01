@@ -1,6 +1,7 @@
 import { aliasedTable, gte, lte } from 'drizzle-orm'
 import { z } from 'zod'
 import { calcoloClassifica, Giornata } from '~/server/utils/classifica'
+
 const schemaParams = z.object({
   legaId: z.coerce.number().int().positive().lte(99999999)
 })

@@ -6,7 +6,6 @@ export const schemaLegaInsert = z.object({
     .min(1, { message: 'Devi inserire un nome' })
     .max(100, { message: 'Il nome non può essere più lungo di 100 caratteri' })
     .trim(),
-  createdBy: z.coerce.number().int().positive(),
   giornate: z.coerce
     .number()
     .int({ message: 'Solo numeri interi' })

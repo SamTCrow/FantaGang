@@ -1,7 +1,6 @@
 import { z } from 'zod'
 const schema = z.object({
   squadraId: z.coerce.number().int().positive().lte(999999),
-  userId: z.coerce.number().int().positive().lte(999999),
   legaId: z.coerce.number().int().positive().lte(999999),
   nome: z.string().max(30).optional(),
   proprietario: z.string().max(30).optional(),
@@ -10,11 +9,11 @@ const schema = z.object({
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)
-  const { squadraId, userId, legaId, proprietario, stemma, nome } = await readValidatedBody(event, schema.parse)
+  const { squadraId, legaId, proprietario, stemma, nome } = await readValidatedBody(event, schema.parse)
   if (!session.user) {
     throw createError({ statusCode: 401, statusMessage: 'Utente non registrato' })
   }
-  if (session.user.id !== userId) {
+  if (!session.user.id) {
     throw createError({ statusCode: 403, statusMessage: 'Utente non autorizzato' })
   }
   try {

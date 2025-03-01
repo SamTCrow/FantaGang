@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 	import type { FormSubmitEvent } from "#ui/types";
 	import { schemaSquadreInsert, type SchemaSquadreInsert } from "~/shared/utils/squadraPost";
+	import LegaId from "../calendario/[legaId].vue";
 
 	const { user } = useUserSession();
 	const { legaSelect, listaLeghe } = await useGetLeghe();
+	const { listaSquadre, loadingSquadre, getUserSquadre } = await useGetSquadre();
 	const toast = useToast();
 	const q = ref("");
 	const edit = ref(false);
-	const { listaSquadre, loadingSquadre, getUserSquadre } = await useGetSquadre();
 	const perPage = 10;
 	const page = ref(1);
 
@@ -17,7 +18,6 @@
 		}
 
 		let filtered = listaSquadre.value;
-
 		if (legaSelect.value) {
 			filtered = filtered?.filter((squadra) => squadra.legaId === legaSelect.value?.id);
 		}
@@ -29,7 +29,6 @@
 				});
 			});
 		}
-
 		return filtered?.slice((page.value - 1) * perPage, page.value * perPage);
 	});
 
@@ -59,7 +58,9 @@
 		},
 	];
 
-	const state = reactive({ userId: user.value?.id, legaId: legaSelect.value?.id } as SchemaSquadreInsert & {
+	const state = reactive({
+		legaId: legaSelect.value?.id,
+	} as SchemaSquadreInsert & {
 		squadraId: number | undefined;
 	});
 
@@ -68,6 +69,7 @@
 		state.proprietario = "";
 		state.stemma = "";
 		state.legaId = legaSelect.value?.id ?? 0;
+		edit.value = false;
 	};
 
 	const eliminaSquadra = async (squadraId: number) => {
@@ -87,45 +89,27 @@
 	};
 
 	const aggiungiSquadra = async (event: FormSubmitEvent<SchemaSquadreInsert>) => {
-		if (user.value) {
-			if (!edit.value) {
-				const response = await $fetch("/api/squadre/squadre", {
-					method: "POST",
-					body: {
-						nome: event.data.nome,
-						proprietario: event.data.proprietario,
-						legaId: event.data.legaId,
-						userId: user.value.id,
-						stemma: event.data.stemma,
-					},
-				});
-				if (response.success) {
-					toast.add({ title: response.message });
-					clearState();
-					getUserSquadre();
-				} else {
-					toast.add({ title: response.message, color: "red" });
-				}
-			} else {
-				const response = await $fetch("/api/squadre/squadre", {
-					method: "PUT",
-					body: {
-						squadraId: state.squadraId,
-						userId: user.value.id,
-						legaId: event.data.legaId,
-						stemma: event.data.stemma,
-						nome: event.data.nome,
-						proprietario: event.data.proprietario,
-					},
-				});
-				if (!response) {
-					toast.add({ title: "Modifica non riuscita", color: "red" });
-				}
-				edit.value = false;
-				clearState();
-				getUserSquadre();
-				toast.add({ title: "Squadra modficata" });
-			}
+		const payload = {
+			nome: event.data.nome,
+			proprietario: event.data.proprietario,
+			legaId: event.data.legaId,
+			stemma: event.data.stemma,
+			...(edit.value ? { squadraId: state.squadraId } : {}),
+		};
+		const method = edit.value ? "put" : "post";
+
+		try {
+			await $fetch("/api/squadre/squadre", {
+				method: method,
+				body: payload,
+			});
+			toast.add({ title: edit.value ? "Squadra modificata" : "Squadra aggiunta" });
+			await getUserSquadre();
+		} catch (error) {
+			console.error(error);
+			toast.add({ title: "Errore nell'inserimento della squadra", color: "red" });
+		} finally {
+			clearState();
 		}
 	};
 
@@ -139,7 +123,6 @@
 	};
 
 	const annulla = () => {
-		edit.value = false;
 		clearState();
 	};
 </script>
@@ -210,7 +193,8 @@
 						@click="() => (legaSelect = undefined)" />
 				</div>
 			</template>
-			<div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 justify-between">
+			<div
+				class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 justify-between">
 				<UInput
 					v-model="q"
 					placeholder="Cerca squadre..." />
@@ -226,7 +210,10 @@
 				:loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
 				:rows="filteredRows || []"
 				:columns="columns"
-				:empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'Nessuna squadra.' }">
+				:empty-state="{
+					icon: 'i-heroicons-circle-stack-20-solid',
+					label: 'Nessuna squadra.',
+				}">
 				<template #utils-data="{ row }">
 					<div class="space-x-2">
 						<UButton
