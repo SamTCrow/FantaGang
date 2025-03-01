@@ -1,43 +1,30 @@
 import { z } from "zod";
 const schema = z.object({
 	id: z.coerce.number().int().positive(),
-	userId: z.coerce.number().int().positive(),
 });
 
 export default defineEventHandler(async (event) => {
+	const query = await getValidatedQuery(event, schema.safeParse);
+	const { user } = await getUserSession(event);
+
+	if (!query.success) {
+		throw createError({ statusCode: 400, message: "Parametri non validi" });
+	}
+
+	if (!user) {
+		throw createError({ statusCode: 401, message: "Utente non autorizzato" });
+	}
+
 	try {
-		const { id, userId } = await readValidatedBody(event, schema.parse);
-		const session = await getUserSession(event);
+		const deletedTeam = await db()
+			.delete(squadre)
+			.where(and(eq(squadre.id, query.data.id), eq(squadre.userId, user.id)))
+			.returning()
+			.get();
 
-		if (!session.user || userId !== session.user.id) {
-			return new Response(JSON.stringify({ success: false, message: "Non autorizzato" }), {
-				status: 401,
-				headers: { "Content-Type": "application/json" },
-			});
-		}
-
-		const result = await db().delete(squadre).where(eq(squadre.id, id)).returning().get();
-
-		if (!result) {
-			return new Response(JSON.stringify({ success: false, message: "Risorsa non trovata" }), {
-				status: 404,
-				headers: { "Content-Type": "application/json" },
-			});
-		}
-
-		return result;
+		return deletedTeam;
 	} catch (error) {
-		console.error("Errore nell'endpoint DELETE:", error);
-		return new Response(
-			JSON.stringify({
-				success: false,
-				message: "Impossibile eliminare la squadra",
-				error: error instanceof Error ? error.message : String(error),
-			}),
-			{
-				status: 500,
-				headers: { "Content-Type": "application/json" },
-			}
-		);
+		console.error(error);
+		throw createError({ statusCode: 500, message: "Errore imprevisto" });
 	}
 });

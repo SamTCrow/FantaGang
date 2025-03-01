@@ -71,11 +71,10 @@
 	};
 
 	const eliminaSquadra = async (squadraId: number, createdBy: number) => {
-		const response = await $fetch("/api/squadre/deleteSquadra", {
-			method: "post",
-			body: {
+		const response = await $fetch("/api/squadre/squadre", {
+			method: "delete",
+			query: {
 				id: squadraId,
-				userId: createdBy,
 			},
 		});
 
