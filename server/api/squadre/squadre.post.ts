@@ -6,49 +6,46 @@ export default defineEventHandler(async (event) => {
 		schemaSquadreInsert.parse
 	);
 	const session = await getUserSession(event);
-	if (session.user?.id) {
-		try {
-			const amministratore = await db()
-				.select({ userId: leghe.createdBy })
-				.from(leghe)
-				.where(eq(leghe.id, legaId))
-				.get();
-			if (amministratore?.userId === session.user.id) {
-				const nuovaSquadra = await db()
-					.insert(tables.squadre)
-					.values({
-						nome,
-						presidente: proprietario,
-						legaId,
-						userId: session.user.id,
-						createdAt: new Date(),
-						stemma,
-					})
-					.returning()
-					.get();
-				return {
-					success: true,
-					message: "Squadra aggiunta!",
-					data: nuovaSquadra,
-				};
-			} else {
-				return {
-					success: false,
-					message: "Non sei amministratore di questa lega",
-					data: "",
-				};
-			}
-		} catch (error) {
-			return {
-				success: false,
-				message: "Errore Sconosciuto",
-				data: (error as Error).toString(),
-			};
-		}
+	if (!session.user) {
+		throw createError({ statusCode: 401, message: "Utente non autorizzato." });
 	}
-	return {
-		success: false,
-		message: "Utente non autorizzato",
-		data: "",
-	};
+	try {
+		const amministratore = await db()
+			.select()
+			.from(leghe)
+			.where(and(eq(leghe.id, legaId), eq(leghe.createdBy, session.user.id)))
+			.get();
+
+		if (!amministratore) {
+			throw createError({ statusCode: 401, message: "Utente non autorizzato" });
+		}
+
+		const nuovaSquadra = await db()
+			.insert(tables.squadre)
+			.values({
+				nome,
+				presidente: proprietario,
+				legaId,
+				userId: session.user.id,
+				createdAt: new Date(),
+				stemma,
+			})
+			.returning()
+			.get();
+
+		if (!nuovaSquadra) {
+			throw createError({
+				statusCode: 500,
+				message: "Errore nel database",
+			});
+		}
+
+		return nuovaSquadra;
+	} catch (error) {
+		console.error(error);
+		throw createError({
+			statusCode: 500,
+			message: "Errore imprevisto",
+		});
+	}
 });

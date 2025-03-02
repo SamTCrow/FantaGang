@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
 		}
 
 		if (!partita.legaId) {
-			throw createError({ statusCode: 400, message: "ID lega non valido" });
+			throw createError({ statusCode: 400, message: "La lega della partita è stata cancellata" });
 		}
 
 		const admin = await db()

@@ -2,7 +2,6 @@
 	import type { FormSubmitEvent, Form } from "#ui/types";
 	import { schemaLegaInsert, type SchemaLegaInsert } from "~/shared/utils/legaPost";
 
-	const { user } = useUserSession();
 	const { listaLeghe, getUserLeghe, legheLoading } = await useGetLeghe();
 
 	const page = ref(1);
@@ -84,7 +83,6 @@
 	const creaLega = async (event: FormSubmitEvent<SchemaLegaInsert>) => {
 		const payload = {
 			nome: event.data.nome,
-			userId: user.value?.id,
 			giornate: event.data.giornate,
 			inizio: event.data.inizio ? new Date(event.data.inizio) : undefined,
 			...(edit.value && state.legaId ? { legaId: state.legaId } : {}),
@@ -100,7 +98,7 @@
 			await getUserLeghe();
 		} catch (error) {
 			console.error(error);
-			toast.add({ title: "Errore nell'inserimento della lega", color: "red"});
+			toast.add({ title: "Errore nell'inserimento della lega", color: "red" });
 		} finally {
 			clearState();
 		}
@@ -137,106 +135,113 @@
 </script>
 
 <template>
-	<UContainer class="space-y-2">
-		<UCard>
-			<template #header> Nuova Lega </template>
-			<UForm
-				ref="form"
-				class="space-y-4"
-				:schema="schemaLegaInsert"
-				:state="state"
-				@submit="creaLega">
-				<UFormGroup
-					label="Nome della nuova lega"
-					name="nome"
-					required>
-					<UInput v-model="state.nome" />
-				</UFormGroup>
-				<div class="flex gap-6">
+	<AuthState v-slot="{ loggedIn }">
+		<UContainer
+			v-if="loggedIn"
+			class="space-y-2">
+			<UCard>
+				<template #header> Nuova Lega </template>
+				<UForm
+					ref="form"
+					class="space-y-4"
+					:schema="schemaLegaInsert"
+					:state="state"
+					@submit="creaLega">
 					<UFormGroup
-						label="Giornate"
-						name="giornate">
-						<UInput v-model="state.giornate" />
+						label="Nome della nuova lega"
+						name="nome"
+						required>
+						<UInput v-model="state.nome" />
 					</UFormGroup>
-					<UFormGroup
-						label="Inizio"
-						name="inizio">
-						<UPopover :popper="{ placement: 'bottom-start' }">
-							<UButton
-								icon="i-heroicons-calendar-days-20-solid"
-								:label="formattedDate" />
+					<div class="flex gap-6">
+						<UFormGroup
+							label="Giornate"
+							name="giornate">
+							<UInput v-model="state.giornate" />
+						</UFormGroup>
+						<UFormGroup
+							label="Inizio"
+							name="inizio">
+							<UPopover :popper="{ placement: 'bottom-start' }">
+								<UButton
+									icon="i-heroicons-calendar-days-20-solid"
+									:label="formattedDate" />
 
-							<template #panel="{ close }">
-								<UiDatePicker
-									v-model="state.inizio"
-									is-required
-									@close="close" />
-							</template>
-						</UPopover>
-					</UFormGroup>
+								<template #panel="{ close }">
+									<UiDatePicker
+										v-model="state.inizio"
+										is-required
+										@close="close" />
+								</template>
+							</UPopover>
+						</UFormGroup>
+					</div>
+					<div class="space-x-2">
+						<UButton
+							type="submit"
+							:label="edit ? 'Modifica lega' : 'Crea lega'" />
+						<UButton
+							label="Annulla"
+							@click="annulla" />
+					</div>
+				</UForm>
+			</UCard>
+			<UCard>
+				<template #header> Le tue leghe </template>
+				<div
+					class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 justify-between">
+					<UInput
+						v-model="q"
+						placeholder="Cerca leghe..." />
+					<UPagination
+						v-if="filteredRows"
+						v-model="page"
+						:page-count="perPage"
+						:total="filteredRows.length + 1" />
 				</div>
-				<div class="space-x-2">
-					<UButton
-						type="submit"
-						:label="edit ? 'Modifica lega' : 'Crea lega'" />
-					<UButton
-						label="Annulla"
-						@click="annulla" />
-				</div>
-			</UForm>
-		</UCard>
-		<UCard>
-			<template #header> Le tue leghe </template>
-			<div
-				class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 justify-between">
-				<UInput
-					v-model="q"
-					placeholder="Cerca leghe..." />
-				<UPagination
-					v-if="filteredRows"
-					v-model="page"
-					:page-count="perPage"
-					:total="filteredRows.length + 1" />
-			</div>
-			<UTable
-				v-auto-animate
-				:loading="legheLoading ? true : false"
-				:rows="filteredRows || []"
-				:columns="columns"
-				:empty-state="{
-					icon: 'i-heroicons-circle-stack-20-solid',
-					label: 'Nessuna Lega.',
-				}">
-				<template #nome-data="{ row }">
-					<ULink
-						:to="'/lega/' + row.id"
-						class="hover:opacity-80">
-						{{ row.nome }}
-					</ULink>
-				</template>
-				<template #createdAt-data="{ row }">
-					{{ new Date(row.createdAt).toLocaleDateString() }}
-				</template>
-				<template #inizio-data="{ row }">
-					{{ row.inizio ? new Date(row.inizio).toLocaleDateString() : "ND" }}
-				</template>
-				<template #utils-data="{ row }">
-					<AuthState v-slot="{ user }">
-						<div class="space-x-2">
-							<UButton
-								v-if="user"
-								:disabled="row.createdBy !== user.id"
-								icon="heroicons-outline:trash"
-								@click="cancellaLega(row.id)" />
-							<UButton
-								v-if="user"
-								:disabled="row.createdBy !== user.id"
-								icon="heroicons-outline:pencil-square"
-								@click="modificaLega(row)" />
-						</div>
-					</AuthState>
-				</template>
-			</UTable>
-		</UCard>
-	</UContainer>
+				<UTable
+					v-auto-animate
+					:loading="legheLoading ? true : false"
+					:rows="filteredRows || []"
+					:columns="columns"
+					:empty-state="{
+						icon: 'i-heroicons-circle-stack-20-solid',
+						label: 'Nessuna Lega.',
+					}">
+					<template #nome-data="{ row }">
+						<ULink
+							:to="'/lega/' + row.id"
+							class="hover:opacity-80">
+							{{ row.nome }}
+						</ULink>
+					</template>
+					<template #createdAt-data="{ row }">
+						{{ new Date(row.createdAt).toLocaleDateString() }}
+					</template>
+					<template #inizio-data="{ row }">
+						{{ row.inizio ? new Date(row.inizio).toLocaleDateString() : "ND" }}
+					</template>
+					<template #utils-data="{ row }">
+						<AuthState v-slot="{ user }">
+							<div class="space-x-2">
+								<UButton
+									v-if="user"
+									:disabled="row.createdBy !== user.id"
+									icon="heroicons-outline:trash"
+									@click="cancellaLega(row.id)" />
+								<UButton
+									v-if="user"
+									:disabled="row.createdBy !== user.id"
+									icon="heroicons-outline:pencil-square"
+									@click="modificaLega(row)" />
+							</div>
+						</AuthState>
+					</template>
+				</UTable>
+			</UCard>
+		</UContainer>
+		<div v-else>
+			<span class="text-2xl">Devi essere registrarto per accedere a questa pagina!</span>
+		</div>
+	</AuthState>
 </template>

@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 	const giornata = ref(1);
-	const da = ref();
-	const a = ref();
 	const legaId = useRoute().params.legaId;
 
 	const { data: legaInfo } = await useFetch(() => `/api/leghe/${Number(legaId)}`, {

@@ -1,9 +1,14 @@
 <script lang="ts" setup></script>
 
 <template>
-	<div>
-		<span class="text-4xl text-center text-pretty flex justify-center">
+	<AuthState v-slot="{ loggedIn }">
+		<div
+			v-if="loggedIn"
+			class="text-4xl text-center text-pretty flex justify-center">
 			Seleziona una lega!
-		</span>
-	</div>
+		</div>
+		<div v-else>
+			<span class="text-2xl">Devi essere registrarto per accedere a questa pagina!</span>
+		</div>
+	</AuthState>
 </template>

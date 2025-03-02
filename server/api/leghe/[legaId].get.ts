@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
 		const result = await db()
 			.select({
 				nome: leghe.nome,
+				userId: leghe.createdBy,
 				id: leghe.id,
 				giornateTotali: leghe.giornate,
 				inizio: leghe.inizio,
