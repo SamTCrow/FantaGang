@@ -63,6 +63,8 @@
 			position: absolute !important;
 			left: 0 !important;
 			top: 0 !important;
+			font-weight: bold !important;
+			font-size: large !important;
 		}
 	}
 	html {
