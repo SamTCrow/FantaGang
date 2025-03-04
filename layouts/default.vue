@@ -1,27 +1,28 @@
 <script lang="ts" setup>
-import { NuxtLink } from '#components'
+	//TODO Navigazione per dispositivi mobili
 </script>
 
 <template>
-  <div class="flex flex-col h-screen">
-    <div class="nascondiStampa w-full flex items-center shadow-md z-10 col-span-8 bg-neutral-200 bg-opacity-90">
-      <ULink
-        class="text-2xl p-2"
-        to="/"
-      >
-        Fanta-Gang
-      </ULink>
-    </div>
+	<div class="flex flex-col h-screen">
+		<div
+			class="nascondiStampa w-full flex items-center shadow-md z-10 col-span-8 bg-gray-200 dark:bg-gray-900 bg-opacity-90">
+			<ULink
+				class="text-2xl p-2"
+				to="/">
+				Fanta-Gang
+			</ULink>
+		</div>
 
-    <div class="flex flex-1 overflow-auto">
-      <div class="nascondiStampa md:flex shadow-sm bg-neutral-200 bg-opacity-90 md:col-span-1 hidden w-64">
-        <Navigazione />
-      </div>
-      <div class="stampabile w-full p-4 col-span-8 md:col-span-7 overflow-auto row-span-11">
-        <slot />
-      </div>
-    </div>
-  </div>
+		<div class="flex flex-1 overflow-auto">
+			<div
+				class="nascondiStampa md:flex shadow-sm bg-gray-200 dark:bg-gray-900 bg-opacity-90 md:col-span-1 hidden w-64">
+				<Navigazione />
+			</div>
+			<div class="stampabile w-full p-4 col-span-8 md:col-span-7 overflow-auto row-span-11">
+				<slot />
+			</div>
+		</div>
+	</div>
 </template>
 
 <style>

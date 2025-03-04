@@ -1,5 +1,7 @@
 {
 	"prettier.vueIndentScriptAndStyle": true,
 	"prettier.printWidth": 100,
-	"prettier.bracketSameLine": true
+	"prettier.bracketSameLine": true,
+	"todo-tree.tree.showBadges": true,
+	"todo-tree.tree.showCountsInTree": true
 }

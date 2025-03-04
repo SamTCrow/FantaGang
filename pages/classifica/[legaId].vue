@@ -46,7 +46,9 @@
 							v-bind="partita" />
 					</div>
 				</template>
-				<Classifica :legaId="Number(legaId)" />
+				<Classifica
+					:giornateTotali="legaInfo?.giornateTotali"
+					:legaId="Number(legaId)" />
 			</UCard>
 		</UContainer>
 	</div>

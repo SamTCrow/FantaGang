@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 	const props = defineProps<{
 		legaId: number;
+		giornateTotali: number | undefined;
 	}>();
 
 	const da = ref();
@@ -61,10 +62,12 @@
 	<div>
 		<div class="flex gap-6">
 			<UiSelettoreGiornata
+				:giornate="props.giornateTotali"
 				v-model="da"
 				class="w-32"
 				place-holder="Da..." />
 			<UiSelettoreGiornata
+				:giornate="props.giornateTotali"
 				v-model="a"
 				class="w-32"
 				place-holder="A..." />

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-	//TODO aggiungere pagina per profilo
 	const { loggedIn, clear } = useUserSession();
 	const { legaSelect } = await useGetLeghe();
 
@@ -17,22 +16,27 @@
 				: async () => await navigateTo("/login"),
 		},
 		{
-			label: "Leghe",
+			label: loggedIn.value ? "Opzioni" : "",
+			to: "/opzioni",
+			disabled: !loggedIn.value,
+		},
+		{
+			label: loggedIn.value ? "Leghe" : "",
 			to: "/leghe/",
 			disabled: !loggedIn.value,
 		},
 		{
-			label: "Squadre",
+			label: loggedIn.value ? "Squadre" : "",
 			to: "/squadre/",
 			disabled: !loggedIn.value,
 		},
 		{
-			label: "Calendario",
+			label: loggedIn.value ? "Calendario" : "",
 			to: "/calendario/" + (legaSelect.value?.id ?? ""),
 			disabled: !loggedIn.value,
 		},
 		{
-			label: "Classifica",
+			label: loggedIn.value ? "Classifica" : "",
 			to: "/classifica/" + (legaSelect.value?.id ?? ""),
 			disabled: !loggedIn.value,
 		},

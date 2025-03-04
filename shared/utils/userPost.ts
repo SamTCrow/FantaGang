@@ -1,11 +1,11 @@
 import { z } from 'zod'
-import email from '~/server/api/check/email'
-const emailCheck = async (email: string) => {
+
+export const emailCheck = async (email: string) => {
   const result = await $fetch('/api/check/email', { query: { email } })
   return !result
 }
 
-const userCheck = async (user: string) => {
+export const userCheck = async (user: string) => {
   const result = await $fetch('/api/check/username', {
     query: {
       userName: user
