@@ -65,7 +65,7 @@
 					</div>
 				</template>
 				<div>
-					<Classifica :legaId="Number(legaId)" />
+					<Classifica :legaId="Number(legaId)" :giornateTotali="lega.giornateTotali" />
 				</div>
 			</UCard>
 		</UContainer>

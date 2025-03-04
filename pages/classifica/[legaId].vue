@@ -1,19 +1,16 @@
 <script lang="ts" setup>
 	const legaId = useRoute().params.legaId;
-	
+
 	const { data: legaInfo } = await useFetch(() => `/api/leghe/${Number(legaId)}`, {
-		lazy: true,
 		method: "get",
 	});
-	
-	const giornata = ref(legaInfo.value?.ultimaGiornata);
+
+	const giornata = ref(legaInfo.value?.ultimaGiornata ?? 1);
 	const {
 		data: partite,
 		refresh: getPartite,
 		status,
-	} = useFetch(() => `/api/partite/${legaId}/${giornata.value}`, {
-		lazy: true,
-	});
+	} = await useFetch(() => `/api/partite/${legaId}/${giornata.value}`, {});
 </script>
 
 <template>
@@ -32,7 +29,7 @@
 						class="space-y-4"
 						v-auto-animate>
 						<UiSelettoreGiornata
-							:giornate="legaInfo?.giornateTotali"
+							:giornate="legaInfo?.giornateTotali ?? 0"
 							v-model="giornata"
 							place-holder="Seleziona giornata..."
 							@change="getPartite" />
@@ -47,7 +44,7 @@
 					</div>
 				</template>
 				<Classifica
-					:giornateTotali="legaInfo?.giornateTotali"
+					:giornateTotali="legaInfo?.giornateTotali ?? 0"
 					:legaId="Number(legaId)" />
 			</UCard>
 		</UContainer>
