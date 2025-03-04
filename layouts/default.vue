@@ -29,7 +29,7 @@
 	@media print {
 		@page {
 			size: auto;
-			margin: 25mm 25mm 25mm 25mm !important;
+			margin: 0 !important;
 		}
 
 		body {
@@ -57,7 +57,7 @@
 
 		.stampabile {
 			overflow: hidden !important;
-			margin: auto !important;
+			margin: 0 !important;
 			width: screen !important;
 			visibility: visible !important;
 			position: absolute !important;
