@@ -12,8 +12,8 @@
 
 <template>
 	<div
-		class="flex gap-2 p-2 md:p-4 md:text-lg text-xs justify-evenly outline outline-1 outline-offset-1 text-center">
-		<div class="gap-4 w-full flex justify-around items-center">
+		class="flex gap-2 p-2 md:p-4 md:text-lg text-xs justify-evenly outline outline-1 outline-offset-1 text-center ">
+		<div class="gap-4 w-full flex justify-around items-center flex-wrap-reverse  md:flex-nowrap">
 			<span class="font-bold">{{ partita.puntiCasa }}</span>
 			<span
 				class="w-full grow"
@@ -30,7 +30,7 @@
 			<span class="">-</span>
 			<span class="">{{ gol.ospite }}</span>
 		</div>
-		<div class="gap-4 w-full flex justify-around items-center">
+		<div class="gap-4 w-full flex justify-around items-center flex-wrap md:flex-nowrap">
 			<span
 				class="w-full grow"
 				:class="
