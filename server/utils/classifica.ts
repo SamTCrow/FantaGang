@@ -72,7 +72,7 @@ export const calcoloClassifica = async (risultati: Giornata[]) => {
 			squadraCasa.gs += gol.ospite;
 			squadraCasa.tot += partita.puntiCasa;
 			squadraCasa.pt += 1;
-			squadraOspite.gs += gol.ospite;
+			squadraOspite.gf += gol.ospite;
 			squadraOspite.gs += gol.casa;
 			squadraOspite.tot += partita.puntiOspite;
 			squadraOspite.pt += 1;
