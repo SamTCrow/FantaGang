@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-	const giornata = ref(1);
 	const legaId = useRoute().params.legaId;
-
+	
 	const { data: legaInfo } = await useFetch(() => `/api/leghe/${Number(legaId)}`, {
 		lazy: true,
 		method: "get",
 	});
-
+	
+	const giornata = ref(legaInfo.value?.ultimaGiornata);
 	const {
 		data: partite,
 		refresh: getPartite,

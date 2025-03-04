@@ -1,3 +1,4 @@
+import { isNotNull, max } from "drizzle-orm";
 import { z } from "zod";
 
 const schema = z.object({
@@ -37,8 +38,19 @@ export default defineEventHandler(async (event) => {
 			throw createError({ statusCode: 500, message: "Errore nel database" });
 		}
 
+		const ultimaGiornata = await db()
+			.select({ultimaGiornata: max(partite.numeroGiornata)})
+			.from(partite)
+			.where(
+				and(
+					eq(partite.legaId, legaId),
+					isNotNull(partite.puntiSquadraCasa)
+				)
+			).get();
+
 		return {
 			...result,
+			ultimaGiornata: ultimaGiornata?.ultimaGiornata ?? undefined,
 			squadre: JSON.parse(result.squadre) as {
 				nome: string;
 				id: number;
