@@ -46,10 +46,7 @@
 			label: "Lega",
 			sortable: true,
 		},
-		{
-			key: "stemma",
-			label: "Stemma",
-		},
+
 		{
 			key: "utils",
 			label: "",
@@ -166,6 +163,7 @@
 								option-attribute="nome" />
 						</UFormGroup>
 						<UFormGroup
+							hidden
 							label="Stemma"
 							name="stemma"
 							class="grow">
