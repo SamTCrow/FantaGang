@@ -113,6 +113,13 @@
       "when": 1740693464548,
       "tag": "0015_military_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "6",
+      "when": 1741097818014,
+      "tag": "0016_smart_lethal_legion",
+      "breakpoints": true
     }
   ]
 }

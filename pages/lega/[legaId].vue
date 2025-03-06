@@ -14,11 +14,30 @@
 		squadre: Squadra[];
 		classifica: Classifica;
 	}
+
+	const toast = useToast();
 	const legaId = useRoute().params.legaId;
 	const show = ref(new Set());
-	const { data: lega } = await useFetch<Lega>(() => "/api/leghe/" + legaId, {
+	const { data: lega, refresh } = await useFetch<Lega>(() => "/api/leghe/" + legaId, {
 		lazy: true,
 	});
+
+	const generaCalendario = async () => {
+		try {
+			const result = await $fetch("/api/leghe/azioni/generaCalendario", {
+				query: {
+					legaId: legaId,
+					ar: "true",
+				},
+			});
+			if (result) {
+				toast.add({ title: "Calendario generato con successo." });
+				refresh();
+			}
+		} catch (error: any) {
+			toast.add({ title: error.statusMessage, color: "red" });
+		}
+	};
 </script>
 
 <template>
@@ -26,8 +45,11 @@
 		<UContainer>
 			<UCard v-if="lega">
 				<template #header>
-					<div class="text-center pb-6">
+					<div class="flex justify-between pb-6">
 						<span class="font-bold text-xl">{{ lega.nome.toUpperCase() }}</span>
+						<UButton
+							label="Crea Calendario"
+							@click="generaCalendario" />
 					</div>
 					<div class="text-center text-lg">
 						<UCard>
@@ -65,7 +87,9 @@
 					</div>
 				</template>
 				<div>
-					<Classifica :legaId="Number(legaId)" :giornateTotali="lega.giornateTotali" />
+					<Classifica
+						:legaId="Number(legaId)"
+						:giornateTotali="lega.giornateTotali" />
 				</div>
 			</UCard>
 		</UContainer>

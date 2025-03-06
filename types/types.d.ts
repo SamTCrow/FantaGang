@@ -2,8 +2,8 @@ export type Partita = {
 	id: number;
 	squadraCasa: number | null;
 	nomeCasa: string | null;
-	puntiCasa: number;
+	puntiCasa: number | null;
 	squadraOspite: number | null;
 	nomeOspite: string | null;
-	puntiOspite: number;
+	puntiOspite: number | null;
 };

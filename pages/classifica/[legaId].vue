@@ -11,6 +11,7 @@
 		refresh: getPartite,
 		status,
 	} = await useFetch(() => `/api/partite/${legaId}/${giornata.value}`, {});
+	const print = () => window.print()
 </script>
 
 <template>
@@ -18,12 +19,16 @@
 		<UContainer>
 			<UCard>
 				<template #header>
-					<div class="text-center pb-6 text-lg">
+					<div class="text-center pb-6 text-lg relative">
 						<ULink
 							:to="'/lega/' + legaInfo?.id"
 							class="hover:font-bold hover:opacity-80"
 							>{{ legaInfo?.nome.toUpperCase() }}</ULink
 						>
+						<UButton
+							icon="heroicons:printer"
+							class="absolute right-0"
+							@click="print" />
 					</div>
 					<div
 						class="space-y-4"

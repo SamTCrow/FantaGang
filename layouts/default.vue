@@ -1,16 +1,21 @@
 <script lang="ts" setup>
-	//TODO Navigazione per dispositivi mobili
+	const show = ref(false);
 </script>
 
 <template>
 	<div class="flex flex-col h-screen">
 		<div
-			class="nascondiStampa w-full flex items-center shadow-md z-10 col-span-8 bg-gray-200 dark:bg-gray-900 bg-opacity-90">
+			class="nascondiStampa w-full flex items-center shadow-md z-10 col-span-8 bg-gray-200 dark:bg-gray-900 bg-opacity-90 justify-between">
 			<ULink
 				class="text-2xl p-2"
 				to="/">
 				Fanta-Gang
 			</ULink>
+			<div class="p-2 md:hidden">
+				<UButton
+					label="menu"
+					@click="show = true" />
+			</div>
 		</div>
 
 		<div class="flex flex-1 overflow-auto">
@@ -22,6 +27,18 @@
 				<slot />
 			</div>
 		</div>
+		<USlideover v-model="show">
+			<Navigazione />
+			<UButton
+				color="gray"
+				variant="ghost"
+				size="sm"
+				icon="i-heroicons-x-mark-20-solid"
+				class="flex sm:hidden absolute end-1 top-1 z-10"
+				square
+				padded
+				@click="show = false" />
+		</USlideover>
 	</div>
 </template>
 
@@ -49,6 +66,16 @@
 		}
 		input:focus {
 			outline: none !important;
+		}
+		select {
+			outline: none !important;
+			box-shadow: none !important;
+		}
+		button {
+			display: none !important;
+		}
+		[aria-hidden="true"] {
+			display: none !important;
 		}
 
 		.nascondiStampa {

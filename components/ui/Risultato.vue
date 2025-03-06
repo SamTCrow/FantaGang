@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 	import { calcoloGol } from "~/shared/utils/calcolaPunteggio";
 	import type { Partita } from "~/types/types";
-	const partita = defineProps<Partita>();
 	interface Risultato {
 		casa: number;
 		ospite: number;
 	}
+	const partita = defineProps<Partita>();
 
-	const gol = computed(() => calcoloGol(partita.puntiCasa, partita.puntiOspite));
+	const gol = computed(() => calcoloGol(partita.puntiCasa ?? 0, partita.puntiOspite ?? 0));
 </script>
 
 <template>
 	<div
-		class="flex gap-2 p-2 md:p-4 md:text-lg text-xs justify-evenly outline outline-1 outline-offset-1 text-center ">
-		<div class="gap-4 w-full flex justify-around items-center flex-wrap-reverse  md:flex-nowrap">
+		class="flex gap-2 p-2 md:p-4 md:text-lg text-xs justify-evenly outline outline-1 outline-offset-1 text-center">
+		<div class="gap-4 w-full flex justify-around items-center flex-wrap-reverse md:flex-nowrap">
 			<span class="font-bold">{{ partita.puntiCasa }}</span>
 			<span
 				class="w-full grow"

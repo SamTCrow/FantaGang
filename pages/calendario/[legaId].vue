@@ -21,10 +21,9 @@
 	});
 
 	const { data: legaInfo } = await useFetch(() => `/api/leghe/${Number(legaId)}`, {
-		lazy: true,
 		method: "get",
 	});
-
+	const giornateTotali = ref(legaInfo.value?.giornateTotali ?? 0);
 	const { data: partite, refresh: fetchPartite } = useFetch(
 		() => `/api/partite/${Number(legaId)}/${giornata.value ?? 1}`,
 		{
@@ -118,12 +117,15 @@
 </script>
 
 <template>
-	<AuthState v-slot="{ loggedIn }">
-		<UContainer v-if="loggedIn">
+	<AuthState v-slot="{ user }">
+		<UContainer v-if="user?.id === legaInfo?.userId">
 			<UCard v-auto-animate>
 				<template #header>
 					<div class="flex justify-between items-center">
 						<span>{{ legaInfo?.nome }}</span>
+						<UButton
+							label="Aggiungi giornata"
+							@click="giornateTotali++" />
 					</div>
 				</template>
 				<div
@@ -132,7 +134,7 @@
 					<div class="flex gap-6 items-center">
 						<UiSelettoreGiornata
 							v-model="giornata"
-							:giornate="legaInfo?.giornateTotali"
+							:giornate="giornateTotali"
 							placeHolder="Seleziona Giornata..."
 							@change="fetchPartite" />
 					</div>
@@ -250,7 +252,7 @@
 			</UCard>
 		</UContainer>
 		<div v-else>
-			<span class="text-2xl">Devi essere registrarto per accedere a questa pagina!</span>
+			<span class="text-2xl">Non hai i permessi per accedere a questa pagina!</span>
 		</div>
 	</AuthState>
 </template>

@@ -34,9 +34,9 @@ export const partite = sqliteTable(
   {
     id: integer('id').primaryKey({ autoIncrement: true }),
     squadraCasa: integer('squadra_casa').references(() => squadre.id, { onDelete: 'set null' }),
-    puntiSquadraCasa: integer('punti_squadra_casa').notNull().default(0),
+    puntiSquadraCasa: integer('punti_squadra_casa'),
     squadraOspite: integer('squadra_ospite').references(() => squadre.id, { onDelete: 'set null' }),
-    puntiSquadraOspite: integer('punti_squadra_ospite').notNull().default(0),
+    puntiSquadraOspite: integer('punti_squadra_ospite'),
     legaId: integer('lega_id').references(() => leghe.id, { onDelete: 'cascade' }),
     numeroGiornata: integer('numero_giornata').notNull()
   },

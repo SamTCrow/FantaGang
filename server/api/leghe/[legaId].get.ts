@@ -39,17 +39,20 @@ export default defineEventHandler(async (event) => {
 		}
 
 		const ultimaGiornata = await db()
-			.select({ultimaGiornata: max(partite.numeroGiornata)})
+			.select({ ultimaGiornata: max(partite.numeroGiornata) })
 			.from(partite)
-			.where(
-				and(
-					eq(partite.legaId, legaId),
-					isNotNull(partite.puntiSquadraCasa)
-				)
-			).get();
+			.where(and(eq(partite.legaId, legaId), isNotNull(partite.puntiSquadraCasa)))
+			.get();
 
+		const giornateTotali = await db()
+			.select({ giornateTotali: max(partite.numeroGiornata) })
+			.from(partite)
+			.where(eq(partite.legaId, legaId))
+			.get();
+		
 		return {
 			...result,
+			giornateTotali: giornateTotali?.giornateTotali ?? 0,
 			ultimaGiornata: ultimaGiornata?.ultimaGiornata ?? undefined,
 			squadre: JSON.parse(result.squadre) as {
 				nome: string;
