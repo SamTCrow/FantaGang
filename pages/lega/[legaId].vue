@@ -35,7 +35,7 @@
 				refresh();
 			}
 		} catch (error: any) {
-			toast.add({ title: error.statusMessage, color: "red" });
+			toast.add({ title: error.data.statusMessage, color: "red" });
 		}
 	};
 </script>
