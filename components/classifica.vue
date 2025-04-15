@@ -64,12 +64,12 @@
 			<UiSelettoreGiornata
 				:giornate="props.giornateTotali"
 				v-model="da"
-				class="w-32"
+				class="w-full"
 				place-holder="Da..." />
 			<UiSelettoreGiornata
 				:giornate="props.giornateTotali"
 				v-model="a"
-				class="w-32"
+				class="w-full"
 				place-holder="A..." />
 		</div>
 		<UTable

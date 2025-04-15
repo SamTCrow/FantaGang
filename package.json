@@ -12,6 +12,7 @@
     "lint": "eslint --ext .js,.vue,.ts,.tsx --ignore-path .gitignore ."
   },
   "devDependencies": {
+    "@iconify-json/devicon": "^1.2.23",
     "@iconify-json/heroicons-outline": "^1.2.1",
     "@nuxt/devtools": "^2.1.3",
     "@nuxt/icon": "^1.10.3",
@@ -32,6 +33,7 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
+    "cheerio": "^1.0.0",
     "date-fns": "^2.30.0",
     "drizzle-orm": "^0.40.0",
     "esbuild": "^0.25.0",

@@ -40,6 +40,11 @@
 			to: "/classifica/" + (legaSelect.value?.id ?? ""),
 			disabled: !loggedIn.value,
 		},
+		{
+			label: loggedIn.value ? "Quotazioni" : "",
+			to: "/quotazioni",
+			disabled: !loggedIn.value,
+		},
 	]);
 </script>
 
