@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+//TODO add cache
 export default defineEventHandler(async (event) => {
 	const $ = await cheerio.fromURL(
 		"https://www.gazzetta.it/calcio/fantanews/statistiche/serie-a-2024-25/"
@@ -30,6 +31,9 @@ export default defineEventHandler(async (event) => {
 		],
 	}).Players;
 	listaQuotazioni.shift();
+	const nuovalista = listaQuotazioni.map((p) => {
+		return { ...p, Quotazione: Number(p.Quotazione) };
+	});
 
-	return listaQuotazioni;
+	return nuovalista;
 });

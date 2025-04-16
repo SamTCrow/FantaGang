@@ -30,16 +30,7 @@
 			to: "/squadre/",
 			disabled: !loggedIn.value,
 		},
-		{
-			label: loggedIn.value ? "Calendario" : "",
-			to: "/calendario/" + (legaSelect.value?.id ?? ""),
-			disabled: !loggedIn.value,
-		},
-		{
-			label: loggedIn.value ? "Classifica" : "",
-			to: "/classifica/" + (legaSelect.value?.id ?? ""),
-			disabled: !loggedIn.value,
-		},
+
 		{
 			label: loggedIn.value ? "Quotazioni" : "",
 			to: "/quotazioni",

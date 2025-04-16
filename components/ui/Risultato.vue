@@ -12,8 +12,9 @@
 
 <template>
 	<div
-		class="flex gap-2 p-2 md:p-4 md:text-lg text-xs justify-evenly outline outline-1 outline-offset-1 text-center">
-		<div class="gap-4 w-full flex justify-around items-center flex-wrap-reverse md:flex-nowrap">
+		class="flex gap-2 p-2 md:p-4 md:text-lg text-xs outline outline-1 outline-offset-1 items-center align-middle">
+		<div
+			class="gap-4 w-full flex justify-around items-center flex-wrap-reverse md:flex-nowrap text-left align-middle">
 			<span class="font-bold">{{ partita.puntiCasa }}</span>
 			<span
 				class="w-full grow"
@@ -25,12 +26,13 @@
 				>{{ partita.nomeCasa?.toUpperCase() }}</span
 			>
 		</div>
-		<div class="gap-2 md:gap-4 font-bold flex justify-center items-center">
-			<span class="">{{ gol.casa }}</span>
-			<span class="">-</span>
-			<span class="">{{ gol.ospite }}</span>
+		<div class="gap-4 font-bold flex justify-center items-center align-middle">
+			<span>{{ gol.casa }}</span>
+			<span>-</span>
+			<span>{{ gol.ospite }}</span>
 		</div>
-		<div class="gap-4 w-full flex justify-around items-center flex-wrap md:flex-nowrap">
+		<div
+			class="gap-4 w-full flex justify-around items-center flex-wrap md:flex-nowrap text-right align-middle">
 			<span
 				class="w-full grow"
 				:class="

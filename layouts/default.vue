@@ -23,7 +23,7 @@
 				class="nascondiStampa md:flex shadow-sm bg-gray-200 dark:bg-gray-900 bg-opacity-90 md:col-span-1 hidden w-64">
 				<Navigazione />
 			</div>
-			<div class="stampabile w-full p-4 col-span-8 md:col-span-7 overflow-auto row-span-11">
+			<div class="w-full p-4 col-span-8 md:col-span-7 overflow-auto row-span-11">
 				<slot />
 			</div>
 		</div>
@@ -43,10 +43,11 @@
 </template>
 
 <style>
+	@custom-variant hover (&:hover);
 	@media print {
 		@page {
 			size: auto;
-			margin: 0 !important;
+			margin: none !important;
 		}
 
 		body {
@@ -55,27 +56,36 @@
 			visibility: hidden !important;
 		}
 
-		input {
-			outline: 0 !important;
-			border: 0 !important;
-			border-width: 0 !important;
-			box-shadow: none !important;
-			padding: 0 !important;
-			font-size: 1rem !important;
-			line-height: 1.25rem !important;
-		}
-		input:focus {
-			outline: none !important;
-		}
 		select {
 			outline: none !important;
 			box-shadow: none !important;
 		}
+
 		button {
 			display: none !important;
 		}
+
 		[aria-hidden="true"] {
 			display: none !important;
+		}
+
+		td,
+		th {
+			padding: 4px !important;
+		}
+
+		div {
+			margin: none !important;
+			border: none !important;
+			outline: none !important;
+		}
+
+		span {
+			margin: none !important;
+			padding: 0 !important;
+			vertical-align: middle !important;
+			font-size: medium;
+			font-weight: 400;
 		}
 
 		.nascondiStampa {
@@ -85,7 +95,7 @@
 		.stampabile {
 			overflow: hidden !important;
 			margin: 0 !important;
-			width: screen !important;
+			width: 100% !important;
 			visibility: visible !important;
 			position: absolute !important;
 			left: 0 !important;
