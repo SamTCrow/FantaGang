@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	const { data: listone } = useFetch("/api/quotazioni", { lazy: true });
+	const { data: listone, status } = await useFetch("/api/quotazioni", { lazy: true });
 	const columns = [
 		{ key: "Nome", label: "Nome", sortable: true },
 		{ key: "Squadra", label: "Squadra", sortable: true },
@@ -18,33 +18,52 @@
 		{ key: "MediaModificata", label: "MM", sortable: true },
 	];
 
+	const roles = [
+		{
+			name: "Portiere",
+			value: "P",
+		},
+		{
+			name: "Attaccante",
+			value: "A",
+		},
+		{ name: "Centrocampista", value: "C" },
+		{ name: "Difensore", value: "D" },
+		{ name: "Tutti", value: "" },
+	];
 	const q = ref("");
-
+	const role = ref<string>("");
 	const filteredRows = computed(() => {
-		if (!q.value) {
+		if (!q.value && !role.value) {
 			return listone.value;
 		}
 		if (listone.value)
-			return listone.value.filter((player) =>
-				Object.values(player).some((value) =>
-					String(value).toLowerCase().includes(q.value.toLowerCase())
-				)
+			return listone.value.filter(
+				(player) =>
+					(player.Nome?.toLowerCase().includes(q.value) ||
+						player.Squadra?.toLowerCase().includes(q.value)) &&
+					(role.value ? player.Ruolo?.toLowerCase() === role.value?.toLowerCase() : true)
 			);
 	});
 </script>
 
 <template>
 	<UContainer>
-		<div
-			v-if="filteredRows"
-			class="space-y-4">
-			<UInput
-				v-model="q"
-				placeholder="Ricerca" />
+		<div class="space-y-4">
+			<div class="flex gap-4">
+				<UInput
+					v-model="q"
+					placeholder="Ricerca" />
+				<USelect
+					v-model="role"
+					:options="roles"
+					option-attribute="name" />
+			</div>
 			<UTable
 				sortable
 				searchable
-				:rows="filteredRows"
+				:loading="status === 'pending'"
+				:rows="filteredRows ?? []"
 				:columns="columns"
 				class="overflow-scroll">
 				<template #Squadra-data="{ row }">
@@ -55,8 +74,5 @@
 				</template>
 			</UTable>
 		</div>
-		<USkeleton
-			v-else
-			class="h-screen w-full" />
 	</UContainer>
 </template>

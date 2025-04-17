@@ -54,6 +54,8 @@
 			print-color-adjust: exact;
 			-webkit-print-color-adjust: exact;
 			visibility: hidden !important;
+			background-color: white !important;
+			color: black !important;
 		}
 
 		select {

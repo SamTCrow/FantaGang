@@ -46,7 +46,14 @@
 				class="p-2 flex flex-col gap-2"
 				v-if="user">
 				<span class="text-lg">Benvenuto {{ user.username }}</span>
-				<UiSelettoreLega />
+				<div class="flex w-full gap-2">
+					<UiSelettoreLega class="grow" />
+					<UButton
+						v-if="legaSelect?.id"
+						icon="heroicons:arrow-right"
+						class="hidden md:flex"
+						:to="`/lega/${legaSelect?.id}`" />
+				</div>
 			</div>
 			<UVerticalNavigation
 				:links="links"
