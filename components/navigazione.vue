@@ -34,16 +34,15 @@
 		{
 			label: loggedIn.value ? "Quotazioni" : "",
 			to: "/quotazioni",
-			disabled: !loggedIn.value,
 		},
 	]);
 </script>
 
 <template>
 	<AuthState v-slot="{ user }">
-		<div class="flex flex-col gap-4 w-full">
+		<div class="flex flex-col w-full gap-4">
 			<div
-				class="p-2 flex flex-col gap-2"
+				class="flex flex-col gap-2 p-2"
 				v-if="user">
 				<span class="text-lg">Benvenuto {{ user.username }}</span>
 				<div class="flex w-full gap-2">
