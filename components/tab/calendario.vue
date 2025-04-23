@@ -19,13 +19,16 @@
 		squadraOspite: undefined as undefined | number,
 		puntiOspite: undefined as undefined | number,
 	});
+	const { data: legaInfo, refresh: fetchLega } = await useFetch(
+		() => `/api/leghe/${Number(legaId)}`,
+		{
+			method: "get",
+		}
+	);
 
-	const { data: legaInfo } = await useFetch(() => `/api/leghe/${Number(legaId)}`, {
-		method: "get",
-	});
-	const giornateTotali = ref(legaInfo.value?.giornateTotali ?? 0);
+	const giornateTotali = computed(() => legaInfo.value?.giornateTotali ?? 0);
 	const { data: partite, refresh: fetchPartite } = useFetch(
-		() => `/api/partite/${Number(legaId)}/${giornata.value ?? 1}`,
+		() => `/api/partite/${Number(legaId)}/${giornata.value}`,
 		{
 			lazy: true,
 			immediate: false,
@@ -84,6 +87,7 @@
 
 				toast.add({ title: isEditing.value ? "Partita modificata" : "Partita aggiunta" });
 				await fetchPartite();
+				await fetchLega();
 			}
 		} catch (error) {
 			console.error(error);
@@ -105,6 +109,7 @@
 
 				toast.add({ title: "Partita eliminata", color: "green" });
 				fetchPartite();
+				fetchLega();
 			}
 		} catch (error) {
 			console.error(error);
@@ -124,138 +129,143 @@
 </script>
 
 <template>
-	<UCard v-auto-animate>
-		<template #header>
-			<div class="flex justify-between items-center">
-				<span>{{ legaInfo?.nome }}</span>
-				<UButton
-					v-if="admin"
-					label="Aggiungi giornata"
-					@click="
-						{
-							giornateTotali++;
-							toast.add({ title: 'Giornata Aggiunta' });
-						}
-					" />
-			</div>
-		</template>
-		<div
-			v-auto-animate
-			class="space-y-2">
-			<div class="flex gap-6 items-center">
-				<UiSelettoreGiornata
-					v-model="giornata"
-					:giornate="giornateTotali"
-					placeHolder="Seleziona Giornata..."
-					@change="fetchPartite" />
-			</div>
-			<div v-if="giornata && giornata > 0">
-				<UCard>
-					<template #header>
-						<div v-auto-animate>
-							<div
-								v-auto-animate
-								class="flex justify-between">
-								<span>Risultati {{ giornata }}° giornata</span>
-								<UButton
-									:label="isEditing ? 'Modifica Partita' : 'Aggiungi Partita'"
-									icon="heroicons-outline:plus"
-									@click="() => (show = !show)" />
-							</div>
-							<UForm
-								v-if="show && admin"
-								ref="form"
-								:state="state"
-								:schema="schemaPartitaInsert"
-								@submit="aggiungiPartita">
+	<ClientOnly>
+		<UCard v-auto-animate>
+			<template #header>
+				<div class="flex items-center justify-between">
+					<span>{{ legaInfo?.nome }}</span>
+					<UButton
+						v-if="admin"
+						label="Aggiungi giornata"
+						@click="
+							{
+								giornata = legaInfo?.ultimaGiornata! + 1;
+								show = true;
+							}
+						" />
+				</div>
+			</template>
+			<div
+				v-auto-animate
+				class="space-y-2">
+				<div class="flex items-center gap-6">
+					<UiSelettoreGiornata
+						v-model="giornata"
+						:giornate="giornateTotali"
+						placeHolder="Seleziona Giornata..."
+						@change="fetchPartite" />
+				</div>
+				<div v-if="giornata && giornata > 0">
+					<UCard>
+						<template #header>
+							<div v-auto-animate>
 								<div
 									v-auto-animate
-									class="grid grid-cols-5 p-4 gap-4">
-									<UFormGroup
+									class="flex justify-between">
+									<span>Risultati {{ giornata }}° giornata</span>
+									<UButton
+										v-if="admin"
+										:label="isEditing ? 'Modifica Partita' : 'Aggiungi Partita'"
+										icon="heroicons-outline:plus"
+										@click="() => (show = !show)" />
+								</div>
+								<UForm
+									v-if="show && admin"
+									ref="form"
+									:state="state"
+									:schema="schemaPartitaInsert"
+									@submit="aggiungiPartita">
+									<div
 										v-auto-animate
-										label="Punti"
-										class="mr-auto"
-										name="puntiCasa">
-										<UInput
-											v-model="state.puntiCasa"
-											class="w-16"
-											size="sm" />
-									</UFormGroup>
-									<UFormGroup
-										label="Casa"
-										name="squadraCasa">
-										<USelect
-											v-model="state.squadraCasa"
-											:options="options ?? []"
-											size="sm"
-											option-attribute="nome"
-											value-attribute="id" />
-									</UFormGroup>
+										class="grid grid-cols-5 gap-4 p-4">
+										<UFormGroup
+											v-auto-animate
+											label="Punti"
+											class="mr-auto"
+											name="puntiCasa">
+											<UInput
+												v-model="state.puntiCasa"
+												class="w-16"
+												size="sm" />
+										</UFormGroup>
+										<UFormGroup
+											label="Casa"
+											name="squadraCasa">
+											<USelect
+												v-model="state.squadraCasa"
+												:options="options ?? []"
+												size="sm"
+												option-attribute="nome"
+												value-attribute="id" />
+										</UFormGroup>
 
-									<span class="text-center">VS</span>
+										<span class="text-center">VS</span>
 
-									<UFormGroup
-										label="Ospite"
-										name="squadraOspite">
-										<USelect
-											v-model="state.squadraOspite"
-											size="sm"
-											:options="options ?? []"
-											option-attribute="nome"
-											value-attribute="id" />
-									</UFormGroup>
-									<UFormGroup
-										label="Punti"
-										:ui="{
-											label: {
-												wrapper: 'content-end items-end justify-end',
-											},
-											error: 'text-right',
-										}"
-										name="puntiOspite">
-										<UInput
-											v-model="state.puntiOspite"
-											size="sm"
-											class="w-16 ml-auto" />
-									</UFormGroup>
-								</div>
+										<UFormGroup
+											label="Ospite"
+											name="squadraOspite">
+											<USelect
+												v-model="state.squadraOspite"
+												size="sm"
+												:options="options ?? []"
+												option-attribute="nome"
+												value-attribute="id" />
+										</UFormGroup>
+										<UFormGroup
+											label="Punti"
+											:ui="{
+												label: {
+													wrapper: 'content-end items-end justify-end',
+												},
+												error: 'text-right',
+											}"
+											name="puntiOspite">
+											<UInput
+												v-model="state.puntiOspite"
+												size="sm"
+												class="w-16 ml-auto" />
+										</UFormGroup>
+									</div>
 
-								<div class="flex gap-4 justify-end mt-4">
-									<UButton
-										v-if="isEditing"
-										color="gray"
-										variant="soft"
-										icon="i-heroicons-x-mark"
-										label="Annulla"
-										@click="clear" />
-									<UButton
-										type="submit"
-										:color="isEditing ? 'orange' : 'primary'"
-										:label="isEditing ? 'Salva' : 'Aggiungi'" />
-								</div>
-							</UForm>
-						</div>
-					</template>
-					<div
-						v-if="partite?.length"
-						v-auto-animate>
+									<div class="flex justify-end gap-4 mt-4">
+										<UButton
+											v-if="isEditing"
+											color="gray"
+											variant="soft"
+											icon="i-heroicons-x-mark"
+											label="Annulla"
+											@click="clear" />
+										<UButton
+											type="submit"
+											:color="isEditing ? 'orange' : 'primary'"
+											:label="isEditing ? 'Salva' : 'Aggiungi'" />
+									</div>
+								</UForm>
+							</div>
+						</template>
 						<div
-							v-for="partita in partite"
-							:key="partita.id"
-							class="flex gap-4 items-center">
-							<UButton
-								icon="heroicons:pencil"
-								@click="() => modificaPartita(partita)" />
-							<UiRisultato
-								v-bind="partita"
-								class="grow" />
-							<UButton
-								icon="heroicons:trash"
-								@click="() => cancellaPartita(partita.id)" />
+							v-if="partite?.length"
+							v-auto-animate>
+							<div
+								v-for="partita in partite"
+								:key="partita.id"
+								class="flex items-center gap-4">
+								<UButton
+									v-if="admin"
+									icon="heroicons:pencil"
+									@click="() => modificaPartita(partita)" />
+								<UiRisultato
+									v-bind="partita"
+									class="grow" />
+								<UButton
+									v-if="admin"
+									icon="heroicons:trash"
+									@click="() => cancellaPartita(partita.id)" />
+							</div>
 						</div>
-					</div>
-				</UCard>
+					</UCard>
+				</div>
 			</div>
-		</div>
-	</UCard>
+		</UCard>
+	</ClientOnly>
 </template>
