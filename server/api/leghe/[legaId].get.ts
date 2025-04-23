@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 			.from(partite)
 			.where(and(eq(partite.legaId, legaId), isNotNull(partite.puntiSquadraCasa)));
 
-		console.log(ultimaGiornata);
+
 		const giornateTotali = await db()
 			.select({ giornateTotali: max(partite.numeroGiornata) })
 			.from(partite)
