@@ -31,10 +31,10 @@
 			disabled: !loggedIn.value,
 		},
 
-		{
+		/*	{
 			label: loggedIn.value ? "Quotazioni" : "",
 			to: "/quotazioni",
-		},
+		},*/
 	]);
 </script>
 
