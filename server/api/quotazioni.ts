@@ -53,6 +53,6 @@ export default defineCachedEventHandler(
 		return nuovalista;
 	},
 	{
-		maxAge: 1 * 60 * 60,
+		maxAge: 1 * 60 * 10,
 	}
 );
